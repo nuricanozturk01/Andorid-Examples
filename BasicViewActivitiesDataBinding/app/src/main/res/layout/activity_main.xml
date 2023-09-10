@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="nuricanozturk.dev.android.basicviewactivitiesdatabinding.viewmodel.RegisterInfo" />
+        <import type="nuricanozturk.dev.android.basicviewactivitiesdatabinding.viewmodel.MainActivityViewModel" />
+
+        <variable
+            name="mainActivityViewModel"
+            type="MainActivityViewModel" />
+
+        <variable
+            name="registerInfoViewModel"
+            type="RegisterInfo" />
+
+        <variable
+            name="accept"
+            type="Boolean" />
+
+        <variable
+            name="show"
+            type="Object" />
+
+        <variable
+            name="confirmPassword"
+            type="String" />
+        <variable
+            name="result"
+            type="String" />
+        <variable
+            name="day"
+            type="String" />
+
+        <variable
+            name="month"
+            type="String" />
+        <variable
+            name="year"
+            type="String" />
+
+        <variable
+            name="password"
+            type="String" />
+        
+        <variable
+            name="passwordInputType"
+            type="int" />
+        
+        <variable
+            name="showPasswordButtonText"
+            type="String" />
+
+    </data>
+
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/mainActivityLayoutMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
+
+
+        <EditText
+            android:id="@+id/mainActivityEditTextUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:text="@={registerInfoViewModel.name}"
+            android:hint="@string/input_username"
+            android:inputType="text" />
+
+        <!--two way binding-->
+        <EditText
+            android:id="@+id/mainActivityEditTextEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:text="@={registerInfoViewModel.email}"
+            android:hint="@string/input_email"
+            android:inputType="textEmailAddress" />
+
+        <LinearLayout
+            android:id="@+id/mainActivityBirthDateLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:text="@={day}"
+                android:hint="@string/input_day"
+                android:inputType="numberSigned" />
+
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@={month}"
+                android:ems="10"
+                android:hint="@string/input_month"
+                android:inputType="numberSigned" />
+
+
+            <EditText
+                android:text="@={year}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/input_year"
+                android:inputType="numberSigned" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:text="@={password}"
+                    android:hint="@string/password"
+                    android:inputType="@{passwordInputType}" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:tag="@{show}"
+                    android:onClick="@{() -> mainActivityViewModel.handleShowPasswordButton()}"
+                    android:text="@{showPasswordButtonText}"
+                     />
+            </LinearLayout>
+
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:text="@={confirmPassword}"
+                android:hint="@string/password_again"
+                android:inputType="@{passwordInputType}" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="@{accept}"
+                android:onClick="@{() -> mainActivityViewModel.handleRegisterButton()}"
+                android:text="@string/register_button" />
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="@={accept}"
+                android:text="@string/checkbox" />
+
+            <!--One way binding (=) yok-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{result}"
+                />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{() -> mainActivityViewModel.handleClearButton()}"
+                android:text="@string/clear_button" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{() -> mainActivityViewModel.handleCloseButton()}"
+                android:text="@string/close_button" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</layout>
