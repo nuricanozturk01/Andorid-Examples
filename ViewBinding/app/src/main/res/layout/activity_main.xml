@@ -63,20 +63,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
-        <EditText
-            android:id="@+id/mainActivityPassword"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="@string/password"
-            android:inputType="textWebPassword" />
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/mainActivityPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/password"
+                android:inputType="textPassword" />
+            <Button
+                android:id="@+id/mainActivityShowPasswordButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:textColorHint="@color/white"
+                android:hint="@string/show_password_button"
+                />
+        </LinearLayout>
+
 
         <EditText
             android:id="@+id/mainActivityPasswordAgain"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:ems="10"
             android:hint="@string/password_again"

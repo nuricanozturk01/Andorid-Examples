@@ -10,6 +10,8 @@ import nuricanozturk.dev.android.viewBinding.global.alert.promptDecision
 import nuricanozturk.dev.android.viewBinding.global.alert.promptNotConfirmedDialog
 import nuricanozturk.dev.android.viewBinding.viewmodel.RegisterInfo
 import nuricanozturk.dev.android.viewBinding.databinding.ActivityMainBinding
+import nuricanozturk.dev.android.viewBinding.global.alert.INPUT_TYPE_TEXT_PASSWORD_HIDE
+import nuricanozturk.dev.android.viewBinding.global.alert.INPUT_TYPE_TEXT_PASSWORD_SHOW
 import java.time.DateTimeException
 import java.time.LocalDate
 
@@ -29,7 +31,29 @@ class MainActivity : AppCompatActivity() {
         setContentView(mViewBinding.root)
 
     }
+    private fun showPasswordButtonClickedCallback()
+    {
+        with(mViewBinding.mainActivityShowPasswordButton) {
+            val show = tag as Boolean
+            val resId =
+                if (show) R.string.hide_password_button else R.string.show_password_button
 
+            setText(resId)
+            mViewBinding.mainActivityPassword.inputType =
+                if (show) INPUT_TYPE_TEXT_PASSWORD_SHOW else INPUT_TYPE_TEXT_PASSWORD_HIDE
+            mViewBinding.mainActivityPasswordAgain.inputType =
+                if (show) INPUT_TYPE_TEXT_PASSWORD_SHOW else INPUT_TYPE_TEXT_PASSWORD_HIDE
+            tag = !show
+        }
+    }
+
+    private fun initShowPasswordButton()
+    {
+        mViewBinding.mainActivityShowPasswordButton.apply {
+            tag = true
+            setOnClickListener{showPasswordButtonClickedCallback()}
+        }
+    }
     private fun registerButtonCallback(): RegisterInfo? {
         val registerInfo: RegisterInfo?
         try {
@@ -83,10 +107,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
+
         initBinding()
         initCloseButton()
         initAcceptCheckbox()
         initRegisterButton()
+        initShowPasswordButton()
     }
 
     private fun initAcceptCheckbox() {
