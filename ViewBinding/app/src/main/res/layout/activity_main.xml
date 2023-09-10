@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainActivityLayoutMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -25,6 +26,7 @@
         android:inputType="textEmailAddress" />
 
     <LinearLayout
+        android:id="@+id/mainActivityBirthDateLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -63,10 +65,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <EditText
                 android:id="@+id/mainActivityPassword"
                 android:layout_width="match_parent"
@@ -75,15 +79,15 @@
                 android:ems="10"
                 android:hint="@string/password"
                 android:inputType="textPassword" />
+
             <Button
                 android:id="@+id/mainActivityShowPasswordButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:textColorHint="@color/white"
                 android:hint="@string/show_password_button"
-                />
+                android:textColorHint="@color/white" />
         </LinearLayout>
 
 
@@ -114,6 +118,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/checkbox" />
+
+        <TextView
+            android:id="@+id/mainActivityTextViewResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            />
+
+        <Button
+            android:id="@+id/mainActivityClearButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/clear_button" />
 
         <Button
             android:id="@+id/mainActivityCloseButton"

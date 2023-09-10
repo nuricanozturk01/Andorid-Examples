@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.EditText
 import android.widget.Toast
+import androidx.core.view.children
 
 import nuricanozturk.dev.android.viewBinding.global.alert.promptDecision
 import nuricanozturk.dev.android.viewBinding.global.alert.promptNotConfirmedDialog
@@ -73,8 +75,8 @@ class MainActivity : AppCompatActivity() {
                 mViewBinding.mainActivityEditTextEmail.text.toString(),
                 birthDate
             )
-
-            Toast.makeText(this, registerInfo.toString(), Toast.LENGTH_LONG).show()
+            mViewBinding.mainActivityTextViewResult.text = registerInfo.toString()
+            Toast.makeText(this, "Welcome $registerInfo", Toast.LENGTH_LONG).show()
             return registerInfo
 
         } catch (ignore: NumberFormatException) {
@@ -109,10 +111,43 @@ class MainActivity : AppCompatActivity() {
     private fun initViews() {
 
         initBinding()
+        initClearButton();
         initCloseButton()
         initAcceptCheckbox()
         initRegisterButton()
         initShowPasswordButton()
+    }
+
+    private fun initClearButton() {
+        mViewBinding.mainActivityClearButton.apply {
+            setOnClickListener{clearButtonCallback()}
+        }
+    }
+    private fun clearEditTexts()
+    {
+        mViewBinding.mainActivityPassword.setText("")
+        mViewBinding.mainActivityPasswordAgain.setText("")
+        for (view in mViewBinding.mainActivityBirthDateLayout.children)
+            (view as EditText).setText("")
+
+        for (view in mViewBinding.mainActivityLayoutMain.children)
+        {
+            if (view is EditText)
+                view.setText("")
+        }
+
+        mViewBinding.mainActivityTextViewResult.text = ""
+    }
+    private fun clearButtonCallback() {
+        clearEditTexts()
+        mViewBinding.checkBox.isChecked = false
+        with(mViewBinding.mainActivityPassword)
+        {
+            inputType = INPUT_TYPE_TEXT_PASSWORD_HIDE
+            mViewBinding.mainActivityShowPasswordButton.setText(R.string.show_password_button)
+            tag = false
+        }
+        mViewBinding.mainActivityEditTextUsername.requestFocus()
     }
 
     private fun initAcceptCheckbox() {

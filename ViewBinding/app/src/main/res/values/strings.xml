@@ -9,6 +9,7 @@
     <string name="checkbox">Accept Conditions</string>
     <string name="register_button">Register</string>
     <string name="close_button">Close</string>
+    <string name="clear_button">Clear</string>
     <string name="password">Password</string>
     <string name="password_again">Password Again</string>
     <string name="show_password_button">Show Password</string>
