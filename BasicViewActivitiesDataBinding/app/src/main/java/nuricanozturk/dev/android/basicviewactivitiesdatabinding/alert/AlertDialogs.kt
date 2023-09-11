@@ -4,20 +4,20 @@ import android.content.Context
 import android.content.DialogInterface
 import androidx.appcompat.app.AlertDialog
 
-public fun promptNotConfirmedDialog(context: Context, titleResId: String, message: String,
-                                    neutralButtonText: String,
-                                    callback: (DialogInterface, Int) -> Unit)
+fun promptNotConfirmedDialog(context: Context, titleResId: Int, messageResId: Int,
+                             neutralButtonResId: Int,
+                             callback: (DialogInterface, Int) -> Unit)
 {
     AlertDialog.Builder(context)
         .setTitle(titleResId)
-        .setMessage(message)
-        .setNeutralButton(neutralButtonText) {d,w -> callback(d,w)}
+        .setMessage(messageResId)
+        .setNeutralButton(neutralButtonResId) {d, w -> callback(d, w)}
         .create()
         .show()
 }
 
-fun promptDecision(context: Context, titleResId: String, messageResId: String,
-                   positiveButtonResId: String, negativeButtonResId: String,
+fun promptDecision(context: Context, titleResId: Int, messageResId: Int,
+                   positiveButtonResId: Int, negativeButtonResId: Int,
                    positiveButtonCallback: (DialogInterface, Int) -> Unit,
                    negativeButtonCallback: (DialogInterface, Int) -> Unit)
 {

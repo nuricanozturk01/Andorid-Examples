@@ -1,18 +1,20 @@
 package nuricanozturk.dev.android.basicviewactivitiesdatabinding.viewmodel
 
 import nuricanozturk.dev.android.basicviewactivitiesdatabinding.MainActivity
+import java.lang.ref.WeakReference
 
 class MainActivityViewModel(var activity: MainActivity) {
 
-    fun handleOpenToggleButton(checked: Boolean) {
-        activity.openToggleButtonCallback(checked)
-    }
+    private val mWeakReference = WeakReference(activity)
+    fun handleOpenToggleButton(checked: Boolean) = mWeakReference.get()?.openToggleButtonCheckedChanged(checked)
 
-    fun handleShowPasswordButton() = activity.handleShowPasswordButton()
+    fun handleAllowShowPasswordSwitch(checked: Boolean) = mWeakReference.get()?.allowShowPasswordSwitchCheckedChanged(checked)
 
-    fun handleRegisterButton() = activity.handleRegisterButton()
+    fun handleShowPasswordButton() = mWeakReference.get()?.showPasswordButtonClicked()
 
-    fun handleClearButton() = activity.handleClearButton()
+    fun handleRegisterButton() = mWeakReference.get()?.registerButtonClicked()
 
-    fun handleCloseButton() = activity.handleCloseButton()
+    fun handleClearButton() = mWeakReference.get()?.clearButtonClicked()
+
+    fun handleCloseButton() = mWeakReference.get()?.closeButtonClicked()
 }

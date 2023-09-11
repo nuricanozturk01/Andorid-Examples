@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.children
-import androidx.core.view.isInvisible
 import androidx.databinding.DataBindingUtil
 import nuricanozturk.dev.android.basicviewactivitiesdatabinding.alert.INPUT_TYPE_TEXT_PASSWORD_HIDE
 import nuricanozturk.dev.android.basicviewactivitiesdatabinding.alert.INPUT_TYPE_TEXT_PASSWORD_SHOW
@@ -20,160 +20,188 @@ import java.time.DateTimeException
 import java.time.LocalDate
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var mDataBinding: ActivityMainBinding
+    private lateinit var mBinding: ActivityMainBinding
+
+    private fun neutralButtonClickedCallback()
+    {
+        mBinding.confirmPassword = ""
+    }
+
+    private fun positiveButtonClickedCallback()
+    {
+        finish()
+    }
+
+    private fun negativeButtonClickedCallback()
+    {
+        Toast.makeText(this, R.string.message_continue, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun confirm(password: String, confirmPassword: String) : Boolean
+    {
+        var result = true
+
+        if (password != confirmPassword) {
+            promptNotConfirmedDialog(this, R.string.confirm_alert_dialog_title,
+                R.string.message_password_not_confirmed, R.string.ok_button_text) {_, _ -> neutralButtonClickedCallback()}
+            Toast.makeText(this, R.string.message_password_not_confirmed, Toast.LENGTH_LONG).show()
+            result = false
+        }
+
+        return result
+    }
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    private fun getRegisterInfo() : RegisterInfo?
+    {
+        if (!confirm(mBinding.password!!, mBinding.confirmPassword!!))
+            return null
+
+        val name = mBinding.registerInfoViewModel!!.name
+        val email = mBinding.registerInfoViewModel!!.email
+        val birthDate = LocalDate.of(mBinding.year!!.toInt(), mBinding.month!!.toInt(), mBinding.day!!.toInt())
+        val userName = mBinding.registerInfoViewModel!!.userName
+
+        return RegisterInfo(name, email, birthDate, userName, mBinding.password!!)
+    }
+
+    private fun clearEditTexts()
+    {
+        mBinding.password = ""
+        for (view in mBinding.mainActivityLayoutRegisterInfo.children)
+            if (view is EditText)
+                view.setText("")
+
+        mBinding.confirmPassword = ""
+    }
+
+    private fun setRegisterInfoVisibility(visibility: Int)
+    {
+        for (view in mBinding.mainActivityLayoutRegisterInfo.children)
+            view.visibility = visibility
+    }
+
+    private fun initBirthDateTexts()
+    {
+        val today = LocalDate.now()
+
+        mBinding.day = today.dayOfMonth.toString()
+        mBinding.month = today.monthValue.toString()
+        mBinding.year = today.year.toString()
+    }
+
+    private fun initBinding()
+    {
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        mBinding.registerInfoViewModel = RegisterInfo()
+        mBinding.mainActivityViewModel = MainActivityViewModel(this)
+        mBinding.show = true
+        mBinding.passwordInputType = INPUT_TYPE_TEXT_PASSWORD_HIDE
+        mBinding.showPasswordButtonText = resources.getString(R.string.button_show_password_text)
+    }
+
+    private fun initViews()
+    {
+        initBinding()
+        initBirthDateTexts()
+    }
+
+    private fun initialize()
+    {
+        initViews()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
         initialize()
     }
 
-    private fun initBirthDateTexts() {
-        val today = LocalDate.now()
-
-        mDataBinding.day = today.dayOfMonth.toString()
-        mDataBinding.month = today.monthValue.toString()
-        mDataBinding.year = today.year.toString()
+    private fun allowClosePositiveButtonClickedCallback(checked: Boolean)
+    {
+        clearButtonClicked()
+        setRegisterInfoVisibility(View.GONE)
     }
 
-    private fun initBinding() {
-
-        mDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        mDataBinding.registerInfoViewModel = RegisterInfo()
-        mDataBinding.mainActivityViewModel = MainActivityViewModel(this)
-
-        initBirthDateTexts()
-        mDataBinding.show = true
-        mDataBinding.passwordInputType = INPUT_TYPE_TEXT_PASSWORD_HIDE
-        mDataBinding.showPasswordButtonText = resources.getString(R.string.show_password_button)
-
-
+    private fun allowCShowPasswordNegativeButtonClickedCallback()
+    {
+        mBinding.allowShowPasswordChecked = false
     }
 
-    private fun showPasswordButtonClickedCallback() {
-        val show = mDataBinding.show as Boolean
-
-        val resId = if (show) R.string.hide_password_button else R.string.show_password_button
-
-        mDataBinding.showPasswordButtonText = resources.getString(resId)
-
-        mDataBinding.passwordInputType =
-            if (show) INPUT_TYPE_TEXT_PASSWORD_SHOW else INPUT_TYPE_TEXT_PASSWORD_HIDE
-
-        mDataBinding.show = !show
+    fun openToggleButtonCheckedChanged(checked: Boolean)
+    {
+        if (!checked)
+            AlertDialog.Builder(this).setTitle(R.string.confirm_alert_dialog_title)
+                .setMessage(R.string.message_confirm_close)
+                .setPositiveButton(R.string.yes_button_text) {_, _-> allowClosePositiveButtonClickedCallback(checked) }
+                .setNegativeButton(R.string.no_button_text) {_, _ -> mBinding.mainActivityToggleButtonOpen.performClick()}
+                .setOnCancelListener{mBinding.mainActivityToggleButtonOpen.performClick()}
+                .create()
+                .show()
+        else
+            setRegisterInfoVisibility(View.VISIBLE)
     }
 
+    fun allowShowPasswordSwitchCheckedChanged(checked: Boolean)
+    {
+        if (!checked)
+            return
 
-    private fun registerButtonCallback(): RegisterInfo? {
-        val registerInfo: RegisterInfo?
+        AlertDialog.Builder(this).setTitle(R.string.confirm_alert_dialog_title)
+            .setMessage(R.string.message_enable_show_password)
+            .setPositiveButton(R.string.yes_button_text) {_, _->   }
+            .setNegativeButton(R.string.no_button_text) {_, _ -> allowCShowPasswordNegativeButtonClickedCallback() }
+            //.setNeutralButton("") {_, _ -> mBinding.allowShowPasswordChecked = false}
+            .setOnCancelListener{mBinding.allowShowPasswordChecked = false}
+            .create()
+            .show()
+    }
+
+    fun showPasswordButtonClicked()
+    {
+        val show = mBinding.show as Boolean
+        val resId = if (show) R.string.button_hide_password_text else R.string.button_show_password_text
+
+        mBinding.showPasswordButtonText = resources.getString(resId)
+        mBinding.passwordInputType = if (show) INPUT_TYPE_TEXT_PASSWORD_SHOW else INPUT_TYPE_TEXT_PASSWORD_HIDE
+        mBinding.show = !show
+    }
+
+    fun registerButtonClicked()
+    {
         try {
-            val password = mDataBinding.password!!
-            val passwordAgain = mDataBinding.confirmPassword!!
+            val registerInfo = getRegisterInfo()
 
-
-            if (!doForConfirmation(password, passwordAgain))
-                return null;
-            val today = LocalDate.now()
-            mDataBinding.day = today.dayOfMonth.toString()
-            mDataBinding.month = today.monthValue.toString()
-            mDataBinding.year = today.year.toString()
-
-            registerInfo = RegisterInfo(
-                mDataBinding.mainActivityEditTextName.text.toString(),
-                mDataBinding.registerInfoViewModel!!.email,
-                LocalDate.of(
-                    mDataBinding.year!!.toInt(),
-                    mDataBinding.month!!.toInt(),
-                    mDataBinding.day!!.toInt()
-                )
-            )
-            mDataBinding.result = registerInfo.toString()
-            Toast.makeText(this, "Welcome $registerInfo", Toast.LENGTH_LONG).show()
-            return registerInfo
-
-        } catch (ignore: NumberFormatException) {
-            Toast.makeText(this, "Invalid value format", Toast.LENGTH_LONG).show()
-        } catch (ignore: DateTimeException) {
-            Toast.makeText(this, "Invalid date format", Toast.LENGTH_LONG).show()
+            if (registerInfo != null) {
+                Toast.makeText(this, registerInfo.toString(), Toast.LENGTH_LONG).show()
+                mBinding.result = registerInfo.toString()
+            }
         }
-        return null
-    }
-
-    private fun doForConfirmation(password: String, passwordAgain: String): Boolean {
-        var result = true
-        if (password != passwordAgain || (password.isEmpty() || password.isBlank() || passwordAgain.isBlank() || passwordAgain.isEmpty())) {
-            promptNotConfirmedDialog(this, "Alert", "Password Not Confirmed",
-                "OK", { _, _ -> neutralButtonCallback() });
-            Toast.makeText(this, "Passwords are not same!", Toast.LENGTH_LONG).show()
-            result = false;
+        catch (ignore: NumberFormatException) {
+            Toast.makeText(this, R.string.message_number_format_exception, Toast.LENGTH_LONG).show()
         }
-        return result;
+        catch (ignore: DateTimeException) {
+            Toast.makeText(this, R.string.message_datetime_exception, Toast.LENGTH_LONG).show()
+        }
     }
 
-     fun openToggleButtonCallback(checked : Boolean)
+    fun clearButtonClicked()
     {
-        setVisibility(if (checked) View.VISIBLE else View.GONE)
-    }
-    private fun neutralButtonCallback() {
-        mDataBinding.registerInfoViewModel?.password = ""
-        mDataBinding.confirmPassword = ""
-    }
-
-    private fun initialize() {
-        initBinding()
-    }
-
-
-    private fun clearEditTexts() {
-        mDataBinding.mainActivityEditTextName.setText("")
-        mDataBinding.mainActivityEmailEditText.setText("")
-        mDataBinding.password = ""
-        mDataBinding.confirmPassword = ""
-
-
-        mDataBinding.day = ""
-        mDataBinding.month = ""
-        mDataBinding.year = ""
-
-        initBirthDateTexts()
-
-        mDataBinding.result = ""
-    }
-
-    private fun setVisibility(visibility : Int)
-    {
-        clearButtonCallback()
-        for (view in mDataBinding.mainActivityLayoutRegisterInfo.children)
-            view.visibility = visibility
-    }
-    private fun clearButtonCallback() {
         clearEditTexts()
-        mDataBinding.accept = false
-        mDataBinding.passwordInputType = INPUT_TYPE_TEXT_PASSWORD_HIDE
-        mDataBinding.showPasswordButtonText = resources.getString(R.string.show_password_button)
-        mDataBinding.show = false;
-
-        mDataBinding.mainActivityEditTextName.requestFocus()
+        initBirthDateTexts()
+        mBinding.accept = false
+        mBinding.passwordInputType = INPUT_TYPE_TEXT_PASSWORD_HIDE
+        mBinding.showPasswordButtonText = resources.getString(R.string.button_show_password_text)
+        mBinding.show = true
+        mBinding.result = ""
+        mBinding.allowShowPasswordChecked = false
+        mBinding.mainActivityEditTextName.requestFocus()
     }
 
-
-    private fun closeButtonClickCallback() {
-        promptDecision(this, "Warning", "Are you sure?", "Yes", "No",
-            { _, _ -> positiveButtonCallback() }) { _, _ -> negativeButtonCallback() }
+    fun closeButtonClicked()
+    {
+        promptDecision(this, R.string.confirm_close_alert_dialog_title, R.string.message_confirm_close,
+            R.string.yes_button_text, R.string.no_button_text,
+            {_, _ -> positiveButtonClickedCallback()}) {_, _ -> negativeButtonClickedCallback()}
     }
-
-    private fun positiveButtonCallback() = finish()
-
-    private fun negativeButtonCallback() =
-        Toast.makeText(this, "Continue the program!", Toast.LENGTH_LONG).show()
-
-    fun handleShowPasswordButton() = showPasswordButtonClickedCallback()
-
-    fun handleRegisterButton() = registerButtonCallback()
-
-    fun handleClearButton() = clearButtonCallback()
-
-    fun handleCloseButton() = closeButtonClickCallback()
-
 }
