@@ -14,4 +14,6 @@
     <string name="password_again">Password Again</string>
     <string name="show_password_button">Show Password</string>
     <string name="hide_password_button">Hide Password</string>
+    <string name="toggle_button_on_text">Close</string>
+    <string name="toggle_button_off_text">Open</string>
 </resources>

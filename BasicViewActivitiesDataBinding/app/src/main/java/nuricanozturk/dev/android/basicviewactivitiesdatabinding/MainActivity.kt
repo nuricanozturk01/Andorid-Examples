@@ -3,9 +3,11 @@ package nuricanozturk.dev.android.basicviewactivitiesdatabinding
 import nuricanozturk.dev.android.basicviewactivitiesdatabinding.viewmodel.RegisterInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.view.children
+import androidx.core.view.isInvisible
 import androidx.databinding.DataBindingUtil
 import nuricanozturk.dev.android.basicviewactivitiesdatabinding.alert.INPUT_TYPE_TEXT_PASSWORD_HIDE
 import nuricanozturk.dev.android.basicviewactivitiesdatabinding.alert.INPUT_TYPE_TEXT_PASSWORD_SHOW
@@ -78,7 +80,7 @@ class MainActivity : AppCompatActivity() {
             mDataBinding.year = today.year.toString()
 
             registerInfo = RegisterInfo(
-                mDataBinding.mainActivityEditTextUsername.text.toString(),
+                mDataBinding.mainActivityEditTextName.text.toString(),
                 mDataBinding.registerInfoViewModel!!.email,
                 LocalDate.of(
                     mDataBinding.year!!.toInt(),
@@ -109,7 +111,10 @@ class MainActivity : AppCompatActivity() {
         return result;
     }
 
-
+     fun openToggleButtonCallback(checked : Boolean)
+    {
+        setVisibility(if (checked) View.VISIBLE else View.GONE)
+    }
     private fun neutralButtonCallback() {
         mDataBinding.registerInfoViewModel?.password = ""
         mDataBinding.confirmPassword = ""
@@ -121,19 +126,27 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun clearEditTexts() {
-        mDataBinding.mainActivityEditTextUsername.setText("")
-        mDataBinding.mainActivityEditTextEmail.setText("")
+        mDataBinding.mainActivityEditTextName.setText("")
+        mDataBinding.mainActivityEmailEditText.setText("")
         mDataBinding.password = ""
         mDataBinding.confirmPassword = ""
 
-        for (view in mDataBinding.mainActivityBirthDateLayout.children)
-            (view as EditText).setText("")
+
+        mDataBinding.day = ""
+        mDataBinding.month = ""
+        mDataBinding.year = ""
 
         initBirthDateTexts()
 
         mDataBinding.result = ""
     }
 
+    private fun setVisibility(visibility : Int)
+    {
+        clearButtonCallback()
+        for (view in mDataBinding.mainActivityLayoutRegisterInfo.children)
+            view.visibility = visibility
+    }
     private fun clearButtonCallback() {
         clearEditTexts()
         mDataBinding.accept = false
@@ -141,7 +154,7 @@ class MainActivity : AppCompatActivity() {
         mDataBinding.showPasswordButtonText = resources.getString(R.string.show_password_button)
         mDataBinding.show = false;
 
-        mDataBinding.mainActivityEditTextUsername.requestFocus()
+        mDataBinding.mainActivityEditTextName.requestFocus()
     }
 
 
