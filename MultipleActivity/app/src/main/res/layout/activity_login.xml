@@ -4,9 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="nuricanozturk.dev.android.multipleactivity.viewmodel.LoginActivityViewModel" />
+        <import type="nuricanozturk.dev.android.multipleactivity.viewmodel.LoginInfoViewModel" />
         <variable
             name="viewModel"
             type="LoginActivityViewModel" />
+
+        <variable
+            name="loginInfoViewModel"
+            type="LoginInfoViewModel" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,20 +20,20 @@
         tools:context=".LoginActivity">
 
         <EditText
-            android:id="@+id/editTextText"
+            android:id="@+id/loginActivityEditTextUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="text"
-            android:text="@={viewModel.username}"
+            android:text="@={loginInfoViewModel.username}"
             android:hint="@string/edittext_username_hint" />
 
         <EditText
-            android:id="@+id/editTextTextPassword"
+            android:id="@+id/loginActivityEditTextPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:text="@={viewModel.password}"
+            android:text="@={loginInfoViewModel.password}"
             android:hint="@string/edittext_password_hint"
             android:inputType="textPassword" />
 

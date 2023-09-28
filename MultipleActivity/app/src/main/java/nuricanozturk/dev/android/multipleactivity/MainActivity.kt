@@ -1,10 +1,14 @@
 package nuricanozturk.dev.android.multipleactivity
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import nuricanozturk.dev.android.multipleactivity.databinding.ActivityMainBinding
+import nuricanozturk.dev.android.multipleactivity.keys.DATE
+import nuricanozturk.dev.android.multipleactivity.keys.DATE_TIME
 import nuricanozturk.dev.android.multipleactivity.viewmodel.MainActivityViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -26,9 +30,12 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun loginButtonClick()
     {
-        startActivity(Intent(this, LoginActivity::class.java))
+        startActivity(Intent(this, LoginActivity::class.java).apply {
+            putExtra(DATE_TIME, DATE)
+        })
     }
 
 

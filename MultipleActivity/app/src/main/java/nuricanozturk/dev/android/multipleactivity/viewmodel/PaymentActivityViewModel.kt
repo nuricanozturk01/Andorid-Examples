@@ -5,8 +5,14 @@ import nuricanozturk.dev.android.multipleactivity.PaymentActivity
 
 data class PaymentActivityViewModel(
     private val activity: PaymentActivity,
-    var username: String = "",
-    var password: String = ""
+    var unitPriceStr: String = "",
+    var name: String = "",
+    var quantityStr: String = "",
 ) {
 
+    fun handlePayButton() = activity.payButtonClicked();
+
+    fun handleExitButton() = activity.exitButtonClicked();
+
+    fun handleClearButton() = activity.clearButtonClicked();
 }

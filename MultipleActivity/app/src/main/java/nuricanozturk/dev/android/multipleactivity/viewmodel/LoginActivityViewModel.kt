@@ -4,9 +4,7 @@ import nuricanozturk.dev.android.multipleactivity.LoginActivity
 
 
 data class LoginActivityViewModel(
-    private val activity: LoginActivity,
-    var username: String = "",
-    var password: String = ""
+    private val activity: LoginActivity
 ) {
 
     fun handleLoginButton() = activity.handleLoginButton()

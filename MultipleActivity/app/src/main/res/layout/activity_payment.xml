@@ -1,12 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
-        <import type="nuricanozturk.dev.android.multipleactivity.viewmodel.PaymentActivityViewModel"/>
+
+        <import type="nuricanozturk.dev.android.multipleactivity.viewmodel.PaymentActivityViewModel" />
+
         <variable
             name="viewModel"
             type="PaymentActivityViewModel" />
+
+        <import type="nuricanozturk.dev.android.multipleactivity.viewmodel.LoginInfoViewModel" />
+
+        <variable
+            name="loginInfoViewModel"
+            type="LoginInfoViewModel" />
+
+        <variable
+            name="result"
+            type="String" />
+
+        <import type="java.time.format.DateTimeFormatter" />
+
+        <import type="java.time.LocalDateTime" />
     </data>
 
     <LinearLayout
@@ -18,6 +35,61 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.username}"/>
+            android:text="@{loginInfoViewModel.username}" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{DateTimeFormatter.ofPattern(&quot;dd/MM/yyyy HH:mm:ss&quot;).format(LocalDateTime.now())}" />
+
+
+        <EditText
+            android:id="@+id/activityPaymentEditTextName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/edittext_product_name_hint"
+            android:text="@={viewModel.name}" />
+
+        <EditText
+            android:id="@+id/activityPaymentEditTextUnitPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/edittext_product_price_hint"
+            android:inputType="numberDecimal"
+            android:text="@={viewModel.unitPriceStr}" />
+
+        <EditText
+            android:id="@+id/activityPaymentEditTextQuantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/edittext_product_count_hint"
+            android:inputType="numberSigned"
+            android:text="@={viewModel.quantityStr}" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.handlePayButton()}"
+            android:text="@string/button_pay" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.handleClearButton()}"
+            android:text="@string/button_clear" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.handleExitButton()}"
+            android:text="@string/button_exit" />
+
+
+        <TextView
+            android:id="@+id/activityPaymentTextViewResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{result}" />
     </LinearLayout>
 </layout>

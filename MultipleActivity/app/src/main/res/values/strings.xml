@@ -5,4 +5,18 @@
     <string name="button_logout_text">Logout</string>
     <string name="edittext_username_hint">Input username</string>
     <string name="edittext_password_hint">Input password</string>
+    <string name="edittext_product_name_hint">Input Product Name</string>
+    <string name="edittext_product_count_hint">Input Count</string>
+    <string name="edittext_product_price_hint">Input Price</string>
+    <string name="button_pay">Pay</string>
+    <string name="button_clear">Clear</string>
+    <string name="button_exit">Exit</string>
+    <string name="clear_question_title">Are you sure about cleaning?</string>
+    <string name="clear_message_body">Cleaning all fields!</string>
+    <string name="clear_yes_button">yes</string>
+    <string name="clear_no_button">no</string>
+    <string name="close_question_title">Are you sure?</string>
+    <string name="close_message_body">App is closing...</string>
+    <string name="close_yes_button">yes</string>
+    <string name="close_no_button">no</string>
 </resources>
