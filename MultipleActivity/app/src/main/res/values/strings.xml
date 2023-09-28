@@ -16,7 +16,7 @@
     <string name="clear_yes_button">yes</string>
     <string name="clear_no_button">no</string>
     <string name="close_question_title">Are you sure?</string>
-    <string name="close_message_body">App is closing...</string>
+    <string name="close_message_body">App is closing…</string>
     <string name="close_yes_button">yes</string>
     <string name="close_no_button">no</string>
 </resources>

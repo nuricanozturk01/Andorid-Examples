@@ -10,8 +10,10 @@ import nuricanozturk.dev.android.multipleactivity.databinding.ActivityMainBindin
 import nuricanozturk.dev.android.multipleactivity.keys.DATE
 import nuricanozturk.dev.android.multipleactivity.keys.DATE_TIME
 import nuricanozturk.dev.android.multipleactivity.viewmodel.MainActivityViewModel
+import java.lang.ref.WeakReference
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity()
+{
 
     private lateinit var mBinding : ActivityMainBinding
     private fun initialize()
@@ -19,7 +21,9 @@ class MainActivity : AppCompatActivity() {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         mBinding.viewModel = MainActivityViewModel(this)
     }
-    override fun onCreate(savedInstanceState: Bundle?) {
+
+    override fun onCreate(savedInstanceState : Bundle?)
+    {
         super.onCreate(savedInstanceState)
         initialize()
     }
@@ -38,6 +42,11 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+   /* override fun onDestroy()
+    {
+        mBinding.viewModel = null // Solution 1
+        super.onDestroy()
+    }*/
 
     fun logoutButtonClick()
     {
