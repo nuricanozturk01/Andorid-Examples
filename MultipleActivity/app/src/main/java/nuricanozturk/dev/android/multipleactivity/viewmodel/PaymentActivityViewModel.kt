@@ -4,10 +4,7 @@ import nuricanozturk.dev.android.multipleactivity.PaymentActivity
 
 
 data class PaymentActivityViewModel(
-    private val activity: PaymentActivity,
-    var unitPriceStr: String = "",
-    var name: String = "",
-    var quantityStr: String = "",
+    private val activity: PaymentActivity
 ) {
 
     fun handlePayButton() = activity.payButtonClicked();

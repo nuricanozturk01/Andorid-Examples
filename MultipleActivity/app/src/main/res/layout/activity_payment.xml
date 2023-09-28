@@ -7,6 +7,16 @@
 
         <import type="nuricanozturk.dev.android.multipleactivity.viewmodel.PaymentActivityViewModel" />
 
+        <import type="nuricanozturk.dev.android.multipleactivity.viewmodel.PaymentInfo" />
+
+        <import type="nuricanozturk.dev.android.multipleactivity.binding.PaymentQuantityToStringConverter" />
+
+        <import type="nuricanozturk.dev.android.multipleactivity.binding.PaymentInfoUnitPriceToString" />
+
+        <variable
+            name="paymentInfo"
+            type="PaymentInfo" />
+
         <variable
             name="viewModel"
             type="PaymentActivityViewModel" />
@@ -49,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/edittext_product_name_hint"
-            android:text="@={viewModel.name}" />
+            android:text="@={paymentInfo.productName}" />
 
         <EditText
             android:id="@+id/activityPaymentEditTextUnitPrice"
@@ -57,7 +67,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/edittext_product_price_hint"
             android:inputType="numberDecimal"
-            android:text="@={viewModel.unitPriceStr}" />
+            android:text="@={PaymentInfoUnitPriceToString.toStr(paymentInfo.unitPrice)}" />
 
         <EditText
             android:id="@+id/activityPaymentEditTextQuantity"
@@ -65,7 +75,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/edittext_product_count_hint"
             android:inputType="numberSigned"
-            android:text="@={viewModel.quantityStr}" />
+            android:text="@={PaymentQuantityToStringConverter.toStr(paymentInfo.quantity)}" />
 
         <Button
             android:layout_width="match_parent"

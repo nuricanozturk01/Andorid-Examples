@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import nuricanozturk.dev.android.multipleactivity.binding.PaymentInfoUnitPriceToString
+import nuricanozturk.dev.android.multipleactivity.binding.PaymentQuantityToStringConverter
 import nuricanozturk.dev.android.multipleactivity.databinding.ActivityPaymentBinding
 import nuricanozturk.dev.android.multipleactivity.keys.USER_INFO
 import nuricanozturk.dev.android.multipleactivity.viewmodel.LoginInfoViewModel
@@ -20,18 +22,14 @@ class PaymentActivity : AppCompatActivity() {
 
     private fun initViewModels() {
         mBinding.viewModel = PaymentActivityViewModel(this)
-        mBinding.loginInfoViewModel = when {
-            Build.VERSION.SDK_INT < VERSION_CODES.TIRAMISU -> intent.getSerializableExtra(
-                USER_INFO
-            ) as LoginInfoViewModel
-
-            else -> intent.getSerializableExtra(
-                USER_INFO,
-                LoginInfoViewModel::class.java
-            ) as LoginInfoViewModel
+        mBinding.loginInfoViewModel =  when {
+            Build.VERSION.SDK_INT < VERSION_CODES.TIRAMISU -> intent.getSerializableExtra(USER_INFO) as LoginInfoViewModel
+            else -> intent.getSerializableExtra(USER_INFO, LoginInfoViewModel::class.java)
         }
-
+        mBinding.paymentInfo = PaymentInfo()
         mBinding.result = ""
+        PaymentQuantityToStringConverter.failStr = "Invalid quantity"
+        PaymentInfoUnitPriceToString.failStr = "Invalid unit price"
     }
 
     private fun initBinding() {
@@ -47,19 +45,29 @@ class PaymentActivity : AppCompatActivity() {
         Toast.makeText(this, mBinding.loginInfoViewModel!!.password, Toast.LENGTH_LONG).show()
     }
 
-    fun payButtonClicked() {
+    private fun checkFailListAppCallback(list: MutableList<String>) : List<String>
+    {
+        if (PaymentQuantityToStringConverter.fail)
+            list.add(PaymentQuantityToStringConverter.failStr)
 
-        try {
-            mBinding.result = ""
-            val paymentInfo = PaymentInfo(
-                mBinding.viewModel!!.name, mBinding.viewModel!!.unitPriceStr.toDouble(),
-                mBinding.viewModel!!.quantityStr.toInt()
-            )
+        if (PaymentInfoUnitPriceToString.fail)
+            list.add(PaymentInfoUnitPriceToString.failStr)
 
-            mBinding.result = paymentInfo.toString()
-        } catch (ignore: Throwable) {
-            Toast.makeText(this, "Problem occurs...", Toast.LENGTH_LONG).show()
-        }
+        if (list.isNotEmpty())
+            Toast.makeText(this, list.joinToString("\n"), Toast.LENGTH_LONG).show()
+
+        return list
+    }
+
+    private fun checkFail() = ArrayList<String>().apply {checkFailListAppCallback(this)}
+
+    fun payButtonClicked()
+    {
+        mBinding.result = ""
+        if (checkFail().isNotEmpty())
+            return
+
+        mBinding.result = mBinding.paymentInfo!!.toString()
     }
 
     fun exitButtonClicked() = AlertDialog.Builder(this)
