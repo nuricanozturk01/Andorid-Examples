@@ -1,4 +1,4 @@
-package nuricanozturk.dev.android.multipleactivity.binding
+package nuricanozturk.dev.app.multipleactivity.library.databinding.binding
 
 import androidx.databinding.InverseMethod
 

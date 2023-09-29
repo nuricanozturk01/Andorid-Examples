@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <import type="nuricanozturk.dev.android.multipleactivity.viewmodel.RegisterActivityViewModel"/>
-        <import type="nuricanozturk.dev.android.multipleactivity.binding.RegisterBirthDateStringConverter"/>
+        <import type="nuricanozturk.dev.app.multipleactivity.library.databinding.binding.RegisterBirthDateStringConverter"/>
         <import type="nuricanozturk.dev.android.multipleactivity.viewmodel.RegisterInfo"/>
         <variable name="registerInfo" type="RegisterInfo" />
         <variable name="viewModel" type="RegisterActivityViewModel" />

@@ -9,9 +9,9 @@
 
         <import type="nuricanozturk.dev.android.multipleactivity.viewmodel.PaymentInfo" />
 
-        <import type="nuricanozturk.dev.android.multipleactivity.binding.PaymentQuantityToStringConverter" />
+        <import type="nuricanozturk.dev.app.multipleactivity.library.databinding.binding.PaymentQuantityToStringConverter" />
 
-        <import type="nuricanozturk.dev.android.multipleactivity.binding.PaymentInfoUnitPriceToString" />
+        <import type="nuricanozturk.dev.app.multipleactivity.library.databinding.binding.PaymentInfoUnitPriceToString" />
 
         <variable
             name="paymentInfo"

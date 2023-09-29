@@ -1,4 +1,4 @@
-package nuricanozturk.dev.android.multipleactivity.binding
+package nuricanozturk.dev.app.multipleactivity.library.databinding.binding
 
 import android.os.Build
 import androidx.annotation.RequiresApi

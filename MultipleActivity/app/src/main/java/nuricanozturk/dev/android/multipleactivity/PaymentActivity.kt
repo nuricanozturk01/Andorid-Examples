@@ -9,8 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import nuricanozturk.dev.android.multipleactivity.binding.PaymentInfoUnitPriceToString
-import nuricanozturk.dev.android.multipleactivity.binding.PaymentQuantityToStringConverter
+
 import nuricanozturk.dev.android.multipleactivity.databinding.ActivityPaymentBinding
 import nuricanozturk.dev.android.multipleactivity.keys.PRODUCT_NAME
 import nuricanozturk.dev.android.multipleactivity.keys.TOTAL_PRICE
@@ -18,6 +17,8 @@ import nuricanozturk.dev.android.multipleactivity.keys.USER_INFO
 import nuricanozturk.dev.android.multipleactivity.viewmodel.LoginInfoViewModel
 import nuricanozturk.dev.android.multipleactivity.viewmodel.PaymentActivityViewModel
 import nuricanozturk.dev.android.multipleactivity.viewmodel.PaymentInfo
+import nuricanozturk.dev.app.multipleactivity.library.databinding.binding.PaymentInfoUnitPriceToString
+import nuricanozturk.dev.app.multipleactivity.library.databinding.binding.PaymentQuantityToStringConverter
 
 class PaymentActivity : AppCompatActivity()
 {
