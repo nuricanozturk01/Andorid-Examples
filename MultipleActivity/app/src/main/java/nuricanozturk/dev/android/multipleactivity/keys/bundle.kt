@@ -9,6 +9,8 @@ const val USERNAME = "username"
 const val DATE_TIME = "date_time"
 
 const val USER_INFO = "user_info"
+const val TOTAL_PRICE = "AMOUNT"
+const val PRODUCT_NAME = "PRODUCT_NAME"
 
 @RequiresApi(Build.VERSION_CODES.O)
 var DATE = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm:ss")).toString()

@@ -1,6 +1,7 @@
 package nuricanozturk.dev.android.multipleactivity
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Build
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
@@ -11,6 +12,8 @@ import androidx.databinding.DataBindingUtil
 import nuricanozturk.dev.android.multipleactivity.binding.PaymentInfoUnitPriceToString
 import nuricanozturk.dev.android.multipleactivity.binding.PaymentQuantityToStringConverter
 import nuricanozturk.dev.android.multipleactivity.databinding.ActivityPaymentBinding
+import nuricanozturk.dev.android.multipleactivity.keys.PRODUCT_NAME
+import nuricanozturk.dev.android.multipleactivity.keys.TOTAL_PRICE
 import nuricanozturk.dev.android.multipleactivity.keys.USER_INFO
 import nuricanozturk.dev.android.multipleactivity.viewmodel.LoginInfoViewModel
 import nuricanozturk.dev.android.multipleactivity.viewmodel.PaymentActivityViewModel
@@ -79,8 +82,14 @@ class PaymentActivity : AppCompatActivity()
 
     private fun positiveButtonCallbackExit(d : DialogInterface?, w : Int)
     {
-        mBinding.loginInfoViewModel!!.username = ""
-        mBinding.loginInfoViewModel!!.password = ""
+        if (mBinding.result!!.isNotEmpty())
+        {
+            Intent().apply {
+                putExtra(PRODUCT_NAME, mBinding.paymentInfo!!.productName)
+                putExtra(TOTAL_PRICE, mBinding.paymentInfo!!.total)
+                setResult(RESULT_OK, this)
+            }
+        }
         finish()
     }
 
