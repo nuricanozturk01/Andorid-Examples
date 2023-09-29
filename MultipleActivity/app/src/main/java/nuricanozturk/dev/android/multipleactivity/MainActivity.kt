@@ -42,11 +42,11 @@ class MainActivity : AppCompatActivity()
         })
     }
 
-   /* override fun onDestroy()
-    {
-        mBinding.viewModel = null // Solution 1
-        super.onDestroy()
-    }*/
+    /* override fun onDestroy()
+     {
+         mBinding.viewModel = null // Solution 1
+         super.onDestroy()
+     }*/
 
     fun logoutButtonClick()
     {

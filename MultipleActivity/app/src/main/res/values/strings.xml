@@ -19,4 +19,13 @@
     <string name="close_message_body">App is closing…</string>
     <string name="close_yes_button">yes</string>
     <string name="close_no_button">no</string>
+    <string name="button_exit_sys">Exit System</string>
+    <string name="edittext_first_name_hint">Input first name</string>
+    <string name="edittext_middle_name_hint">Input middle name</string>
+    <string name="edittext_last_name_hint">Input last name</string>
+    <string name="switch_middle_name_text">Middle Name</string>
+    <string name="edittext_email_hint">Input email</string>
+    <string name="edittext_confirm_password_hint">Confirm password</string>
+    <string name="edittext_birth_date_hint">Input birth date</string>
+
 </resources>

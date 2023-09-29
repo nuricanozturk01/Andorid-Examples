@@ -5,10 +5,10 @@ import java.lang.ref.WeakReference
 
 
 class RegisterActivityViewModel(activity : RegisterActivity,
-                                     var username : String = "",
-                                     var password : String = "")
+                                var username : String = "",
+                                var password : String = "")
 {
 
     private val mWeakReference = WeakReference(activity)
-    fun handleRegisterButton() = mWeakReference.get()?.handleRegisterButton()
+    fun handleRegisterButton() = mWeakReference.get()?.registerButtonClicked()
 }

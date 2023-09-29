@@ -4,10 +4,12 @@ import nuricanozturk.dev.android.multipleactivity.PaymentActivity
 import java.lang.ref.WeakReference
 
 
-class PaymentActivityViewModel(activity: PaymentActivity) {
+class PaymentActivityViewModel(activity : PaymentActivity)
+{
 
     private val mWeakReference = WeakReference(activity)
-    fun handlePayButton() = mWeakReference.get()?.payButtonClicked();
+    fun handleExitSystemButton() = mWeakReference.get()?.exitSystemButtonClicked()
+    fun handlePayButton() = mWeakReference.get()?.payButtonClicked()
 
     fun handleExitButton() = mWeakReference.get()?.exitButtonClicked();
 

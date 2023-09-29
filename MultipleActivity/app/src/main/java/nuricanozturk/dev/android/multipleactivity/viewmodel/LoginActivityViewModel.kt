@@ -9,6 +9,7 @@ import java.lang.ref.WeakReference
 class LoginActivityViewModel(activity : LoginActivity)
 {
     private val mWeakReference = WeakReference(activity)
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun handleLoginButton() = mWeakReference.get()?.handleLoginButton()
 }
