@@ -4,24 +4,27 @@ import androidx.databinding.InverseMethod
 
 object PaymentInfoUnitPriceToString
 {
+
     private var mFail = false
 
-    val fail: Boolean
+    val fail : Boolean
         get() = mFail
 
     var failStr = ""
 
     @InverseMethod("toStr")
     @JvmStatic
-    fun toDouble(str: String) : Double
+    fun toDouble(str : String) : Double
     {
         var result = 0.0
 
-        try {
+        try
+        {
             mFail = false
             result = str.toDouble();
         }
-        catch (ignore: NumberFormatException) {
+        catch (ignore : NumberFormatException)
+        {
             mFail = true;
         }
 
@@ -29,5 +32,5 @@ object PaymentInfoUnitPriceToString
     }
 
     @JvmStatic
-    fun toStr(unitPrice: Double) = unitPrice.toString()
+    fun toStr(unitPrice : Double) = unitPrice.toString()
 }

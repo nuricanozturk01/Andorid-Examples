@@ -13,7 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "MultipleActivity"
+rootProject.name = "HiltApp"
 include(":app")
-include(":DataBindingConverterModule")
-include(":org-csystem-util-datetime")
+ 
