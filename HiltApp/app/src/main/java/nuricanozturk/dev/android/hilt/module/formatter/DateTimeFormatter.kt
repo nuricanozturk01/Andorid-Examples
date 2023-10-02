@@ -1,24 +1,24 @@
-package nuricanozturk.dev.android.hilt.module
+package nuricanozturk.dev.android.hilt.module.formatter
 
 import android.content.Context
-import android.widget.Toast
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import nuricanozturk.dev.android.hilt.annotation.DateTimeFormatterIntercepter
 import java.time.format.DateTimeFormatter
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DateTimeFormatterModule
+object DateTimeFormatter
 {
     @Provides
     @Singleton
-    fun createDateTimeFormatter(@ApplicationContext context : Context) : DateTimeFormatter
+    @DateTimeFormatterIntercepter
+    fun provideDateTimeFormatter(@ApplicationContext context : Context) : DateTimeFormatter
     {
-        Toast.makeText(context, "date-time-provider-singletor", Toast.LENGTH_LONG).show()
         return DateTimeFormatter.ofPattern("dd/MM/yyyy kk:mm:ss")
     }
 }

@@ -4,14 +4,14 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
-import java.time.LocalDateTime
+import java.time.LocalTime
 
 @Module
 @InstallIn(ActivityComponent::class) // scope boyu
-object DateTimeModule
+object TimeModule
 {
 
     @Provides
-    fun createLocalDateTime() : LocalDateTime = LocalDateTime.now()
+    fun createLocalTime() : LocalTime = LocalTime.now()
 
 }
