@@ -1,19 +1,14 @@
 package nuricanozturk.dev.android.hilt.datetime
 
 import nuricanozturk.dev.android.hilt.annotation.DateTimeFormatterIntercepter
+import nuricanozturk.dev.android.hilt.module.SystemDateTimeIntercepter
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
-
-class DateTimeInfo @Inject constructor()
+// COnstructor injection
+class DateTimeInfo @Inject constructor(@DateTimeFormatterIntercepter val formatter : DateTimeFormatter,
+                                       @SystemDateTimeIntercepter val dateTime : LocalDateTime)
 {
-    @Inject
-    lateinit var dateTime: LocalDateTime
-
-    @Inject
-    @DateTimeFormatterIntercepter
-    lateinit var formatter : DateTimeFormatter
-
     override fun toString() = formatter.format(dateTime)
 }

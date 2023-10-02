@@ -13,7 +13,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity()
 {
     @Inject
-    lateinit var dateTimeInfo: DateTimeInfo
+    lateinit var dateTimeInfo: DateTimeInfo // Field Injection
 
     @Inject
     lateinit var dateInfo: DateInfo

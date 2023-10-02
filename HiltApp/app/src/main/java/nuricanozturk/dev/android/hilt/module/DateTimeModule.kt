@@ -10,8 +10,7 @@ import java.time.LocalDateTime
 @InstallIn(ActivityComponent::class) // scope boyu
 object DateTimeModule
 {
-
     @Provides
+    @SystemDateTimeIntercepter
     fun createLocalDateTime() : LocalDateTime = LocalDateTime.now()
-
 }

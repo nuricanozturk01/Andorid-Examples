@@ -5,7 +5,7 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
-class TimeInfo @Inject constructor() // COnstructor injection
+class TimeInfo @Inject constructor()
 {
     @Inject
     lateinit var time: LocalTime
