@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">FirstApp</string>
-    <string name="notification_channel_id">1234</string>
-    <string name="notification_channel_name">Channel</string>
-    <string name="notification_channel_description">NO DESC</string>
-</resources>
