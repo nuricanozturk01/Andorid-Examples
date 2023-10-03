@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">HiltApp</string>
+    <string name="calculate_button_text">Calculate</string>
+    <string name="edittext_operator_hint">Input Operator</string>
+    <string name="edittext_first_hint">Input First Number</string>
+    <string name="edittext_second_hint">Input Second Number</string>
 </resources>
