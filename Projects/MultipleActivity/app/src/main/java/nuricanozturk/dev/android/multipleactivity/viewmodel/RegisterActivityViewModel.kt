@@ -11,4 +11,5 @@ class RegisterActivityViewModel(activity : RegisterActivity,
 
     private val mWeakReference = WeakReference(activity)
     fun handleRegisterButton() = mWeakReference.get()?.registerButtonClicked()
+    fun handleChangeEducation(pos: Int) = mWeakReference.get()?.handleChangeEducation(pos)
 }

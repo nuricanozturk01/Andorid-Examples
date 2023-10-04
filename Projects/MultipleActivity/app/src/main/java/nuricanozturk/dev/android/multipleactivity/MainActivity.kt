@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import nuricanozturk.dev.android.multipleactivity.databinding.ActivityMainBinding
@@ -20,6 +21,7 @@ class MainActivity : AppCompatActivity()
     {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         mBinding.viewModel = MainActivityViewModel(this)
+
     }
 
     override fun onCreate(savedInstanceState : Bundle?)
@@ -27,6 +29,7 @@ class MainActivity : AppCompatActivity()
         super.onCreate(savedInstanceState)
         initialize()
     }
+
 
     fun registerButtonClick()
     {

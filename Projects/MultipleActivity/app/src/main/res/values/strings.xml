@@ -28,4 +28,11 @@
     <string name="edittext_confirm_password_hint">Confirm password</string>
     <string name="edittext_birth_date_hint">Input birth date</string>
 
+    <string-array name="spinner_education_info">
+        <item>Under Graduate</item>
+        <item>Graduate</item>
+        <item>MsC</item>
+        <item>PhD</item>
+    </string-array>
+
 </resources>
