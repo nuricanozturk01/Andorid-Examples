@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">BasicViews</string>
+    <string name="input_password">Input Password</string>
+    <string name="input_username">Input Username</string>
+    <string name="input_email">Input Email</string>
+    <string name="input_day">Day</string>
+    <string name="input_month">Month</string>
+    <string name="input_year">Year</string>
+    <string name="checkbox">Accept Conditions</string>
+    <string name="register_button">Register</string>
+    <string name="close_button">Close</string>
+    <string name="password">Password</string>
+    <string name="password_again">Password Again</string>
+</resources>
