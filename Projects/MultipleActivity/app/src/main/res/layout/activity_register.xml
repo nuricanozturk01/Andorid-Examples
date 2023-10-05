@@ -13,7 +13,13 @@
         <variable name="confirmPassword" type="String" />
         <variable name="middleNameExists" type="boolean" />
         <variable name="educationSelectedPost" type="int" />
+        <variable name="daySelectedPos" type="int" />
+        <variable name="monthSelectedPos" type="int" />
+        <variable name="yearSelectedPos" type="int" />
         <variable name="educationAdapter" type="ArrayAdapter&lt;String&gt;" />
+        <variable name="monthAdapter" type="ArrayAdapter&lt;String&gt;" />
+        <variable name="yearAdapter" type="ArrayAdapter&lt;Integer&gt;" />
+        <variable name="dayAdapter" type="ArrayAdapter&lt;Integer&gt;" />
     </data>
 
     <LinearLayout
@@ -84,31 +90,57 @@
             android:inputType="textPassword"
             android:hint="@string/edittext_confirm_password_hint"
             android:text="@={confirmPassword}"/>
-        <LinearLayout
+        <EditText
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="date"
+            android:hint="@string/edittext_birth_date_hint"
+            android:text="@={RegisterBirthDateStringConverter.toStr(registerInfo.birthDate)}" />
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="date"
-                android:hint="@string/edittext_birth_date_hint"
-                android:text="@={RegisterBirthDateStringConverter.toStr(registerInfo.birthDate)}" />
 
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:adapter="@{educationAdapter}"
-                android:selectedItemPosition="@={educationSelectedPost}"
-                android:onItemSelected="@{(av, v, pos, i) -> viewModel.handleChangeEducation(pos)}"
+                android:adapter="@{dayAdapter}"
+                android:selectedItemPosition="@={daySelectedPos}"
+                android:onItemSelected="@{(av, v, pos, i) -> viewModel.handleChangeDay(pos)}"
+                android:onNothingSelected="@{() -> viewModel.handleChangeDay(1)}"
+                />
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adapter="@{monthAdapter}"
+                android:selectedItemPosition="@={monthSelectedPos}"
+                android:onItemSelected="@{(av, v, pos, i) -> viewModel.handleChangeMonth(pos)}"
+                android:onNothingSelected="@{() -> viewModel.handleChangeMonth(1)}"
+                />
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adapter="@{yearAdapter}"
+                android:selectedItemPosition="@={yearSelectedPos}"
+                android:onItemSelected="@{(av, v, pos, i) -> viewModel.handleChangeYear(pos)}"
+                android:onNothingSelected="@{() -> viewModel.handleChangeYear(1)}"
                 />
         </LinearLayout>
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adapter="@{educationAdapter}"
+            android:selectedItemPosition="@={educationSelectedPost}"
+            android:onItemSelected="@{(av, v, pos, i) -> viewModel.handleChangeEducation(pos)}"
+            android:onNothingSelected="@{() -> viewModel.handleChangeEducation(1)}"
+            />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/button_register_text" />
+            android:text="@string/button_register_text"
+            android:onClick="@{() -> viewModel.handleRegisterButton()}"/>
 
         <Button
             android:layout_width="match_parent"
