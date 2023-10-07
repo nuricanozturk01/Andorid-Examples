@@ -8,6 +8,11 @@ import javax.inject.Inject
 
 class PaymentRepository @Inject constructor(@ApplicationContext var context: Context): IPaymentRepository
 {
+    override fun findByUserName(userName : String) : List<Payment>
+    {
+        TODO("Not yet implemented")
+    }
+
     override fun count() : Long
     {
         TODO("Not yet implemented")
