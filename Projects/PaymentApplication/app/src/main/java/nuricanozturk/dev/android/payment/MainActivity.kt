@@ -1,28 +1,43 @@
 package nuricanozturk.dev.android.payment
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
-import dagger.hilt.android.AndroidEntryPoint
-import nuricanozturk.dev.android.repositorylib.dal.PaymentApplicationHelper
-import nuricanozturk.dev.android.repositorylib.entity.User
-import java.time.LocalDate
-import java.time.Month
-import javax.inject.Inject
+import androidx.databinding.DataBindingUtil
 
-@AndroidEntryPoint
+
+import nuricanozturk.dev.android.payment.databinding.ActivityMainBinding
+import nuricanozturk.dev.android.payment.viewmodel.MainActivityListenerViewModel
+
+
+
 class MainActivity : AppCompatActivity()
 {
-    @Inject
-    lateinit var helper : PaymentApplicationHelper;
+    private lateinit var mBinding : ActivityMainBinding
+
+
     override fun onCreate(savedInstanceState : Bundle?)
     {
-
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val user1 = User("halil", "halil123", "Halil", "OZTURK",
-            LocalDate.of(1937, Month.APRIL, 25), LocalDate.now())
-        helper.userRepository.save(user1)
-        Toast.makeText(this, helper.getHelloMessage(), Toast.LENGTH_LONG).show()
+        initBinding()
+    }
+
+    private fun initBinding()
+    {
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        mBinding.viewModel = MainActivityListenerViewModel(this)
+
+    }
+
+ /*   private fun saveUser()
+    {
+        val user = UserSaveDTO("nuricanozturk", "nuri321", "Nuri",
+            "ÖZTÜRK", LocalDate.of(1999, Month.JANUARY, 25), "Can")
+        paymentService.saveUser(user)
+    }*/
+
+    fun registerButtonClicked()
+    {
+        Intent(this, RegisterActivity::class.java).apply {startActivity(this)}
     }
 }

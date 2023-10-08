@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">PaymentApplication</string>
+    <string name="button_register_text">Register</string>
+    <string name="button_login_text">Login</string>
+    <string name="button_close_text">Close</string>
+    <string name="edittext_user_name_hint_text">Input Username</string>
+    <string name="edittext_password_hint_text">Input Password</string>
+    <string name="edittext_first_name_hint_text">Input First Name</string>
+    <string name="edittext_middle_name_hint_text">Input Middle Name</string>
+    <string name="edittext_last_name_hint_text">Input Last Name</string>
+    <string name="edittext_birth_date_hint_text">Input Birth Date</string>
 </resources>

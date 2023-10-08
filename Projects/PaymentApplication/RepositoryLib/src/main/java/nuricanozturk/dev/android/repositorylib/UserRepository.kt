@@ -35,8 +35,7 @@ class UserRepository @Inject constructor(@ApplicationContext var context : Conte
             {
                 user = ObjectInputStream(fis).readObject() as? User
 
-                if (user?.username == username && user.password == password)
-                    break
+                if (user?.username == username && user.password == password) break
             }
         }
         catch (ignore : EOFException)
@@ -46,17 +45,41 @@ class UserRepository @Inject constructor(@ApplicationContext var context : Conte
         return user
     }
 
+    private fun existsByUsernameCallback(fis : FileInputStream, username : String) : Boolean
+    {
+        var user : User? = null
+        try
+        {
+            while (true)
+            {
+                user = ObjectInputStream(fis).readObject() as? User
+
+                if (user?.username == username) break
+            }
+        }
+        catch (ignore : EOFException)
+        {
+            user = null
+        }
+        return user != null
+    }
+
 
     override fun <S : User?> save(entity : S) : S
     {
-        return mContext.openFileOutput(USER_FILE, MODE_APPEND)
-            .use { saveCallback(it, entity) }
+        return mContext.openFileOutput(USER_FILE, MODE_APPEND).use { saveCallback(it, entity) }
     }
 
     override fun findByUserNameAndPassword(userName : String, password : String) : User?
     {
         return mContext.openFileInput(USER_FILE)
             .use { findByUsernameAndPasswordCallback(it, userName, password) }
+    }
+
+
+    override fun existsById(username : String?) : Boolean
+    {
+        return mContext.openFileInput(USER_FILE).use { existsByUsernameCallback(it, username!!) }
     }
 
     override fun count() : Long
@@ -100,10 +123,6 @@ class UserRepository @Inject constructor(@ApplicationContext var context : Conte
         TODO("Not yet implemented")
     }
 
-    override fun existsById(id : String?) : Boolean
-    {
-        TODO("Not yet implemented")
-    }
 
     override fun findAllById(id : MutableIterable<String>?) : MutableIterable<User>
     {

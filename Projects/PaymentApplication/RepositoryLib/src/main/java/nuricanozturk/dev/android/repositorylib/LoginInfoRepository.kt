@@ -1,17 +1,46 @@
 package nuricanozturk.dev.android.repositorylib
 
 import android.content.Context
+import android.util.Log
 import dagger.hilt.android.qualifiers.ApplicationContext
 import nuricanozturk.dev.android.repositorylib.entity.LoginInfo
+import nuricanozturk.dev.android.repositorylib.entity.User
+import nuricanozturk.dev.android.repositorylib.global.LOGIN_INFO_FILE
+import nuricanozturk.dev.android.repositorylib.global.USER_FILE
+import java.io.EOFException
+import java.io.FileInputStream
+import java.io.ObjectInputStream
 import java.util.Optional
 import javax.inject.Inject
 
 
 class LoginInfoRepository @Inject constructor(@ApplicationContext var context: Context): ILoginInfoRepository
 {
+    /*private fun findByUsernameCallback(fis : FileInputStream, username : String) : List<LoginInfo>?
+    {
+        var loginInfo : List<LoginInfo> = MutableList()
+        try
+        {
+            while (true)
+            {
+                var info = ObjectInputStream(fis).readObject() as? LoginInfo
+
+                if (info?.username == username)
+                    loginInfo.add(info)
+            }
+        }
+        catch (ignore : EOFException)
+        {
+            user = null
+        }
+        return user
+    }*/
     override fun findByUserName(userName : String) : List<LoginInfo>
     {
-        TODO("Not yet implemented")
+       /* return context.openFileInput(LOGIN_INFO_FILE)
+            .use { findByUsernameCallback(it, userName) }*/
+
+        TODO()
     }
 
     override fun findSuccessByUserName(userName : String) : List<LoginInfo>
@@ -23,7 +52,7 @@ class LoginInfoRepository @Inject constructor(@ApplicationContext var context: C
     {
         TODO("Not yet implemented")
     }
-
+/////////////////////////////////////////////////////////
     override fun findLastSuccessByUserName(userName : String) : List<LoginInfo>
     {
         TODO("Not yet implemented")
