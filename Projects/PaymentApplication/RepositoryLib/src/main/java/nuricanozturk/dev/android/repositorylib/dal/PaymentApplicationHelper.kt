@@ -59,8 +59,20 @@ class PaymentApplicationHelper @Inject constructor()
         }
     }
 
+    fun existsByUserNameAndPassword(userName : String, password : String) : Boolean
+    {
+        try
+        {
+            return userRepository.existsByUsernameAndPassword(userName, password)
+        }
+        catch (ex : Throwable)
+        {
+            throw RepositoryException("PaymentApplicationHelper.existsByUserNameAndPassword", ex)
+        }
+    }
 
-    fun existsById(username : String?) : Boolean
+
+    fun existsByUsername(username : String?) : Boolean
     {
         try
         {

@@ -9,13 +9,16 @@ import nuricanozturk.dev.android.repositorylib.global.LOGIN_INFO_FILE
 import nuricanozturk.dev.android.repositorylib.global.USER_FILE
 import java.io.EOFException
 import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
 import java.util.Optional
 import javax.inject.Inject
 
 
 class LoginInfoRepository @Inject constructor(@ApplicationContext var context: Context): ILoginInfoRepository
 {
+    private val mContext : Context = context
     /*private fun findByUsernameCallback(fis : FileInputStream, username : String) : List<LoginInfo>?
     {
         var loginInfo : List<LoginInfo> = MutableList()
@@ -35,6 +38,22 @@ class LoginInfoRepository @Inject constructor(@ApplicationContext var context: C
         }
         return user
     }*/
+
+
+    private fun <S : LoginInfo?> saveCallback(fos : FileOutputStream, loginInfo : S) : S
+    {
+        ObjectOutputStream(fos).writeObject(loginInfo)
+        return loginInfo
+    }
+
+
+
+    override fun <S : LoginInfo?> save(entity : S) : S
+    {
+        return mContext.openFileOutput(LOGIN_INFO_FILE, Context.MODE_APPEND)
+            .use { saveCallback(it, entity) }
+    }
+
     override fun findByUserName(userName : String) : List<LoginInfo>
     {
        /* return context.openFileInput(LOGIN_INFO_FILE)
@@ -88,10 +107,7 @@ class LoginInfoRepository @Inject constructor(@ApplicationContext var context: C
         TODO("Not yet implemented")
     }
 
-    override fun <S : LoginInfo?> save(entity : S) : S
-    {
-        TODO("Not yet implemented")
-    }
+
 
     override fun <S : LoginInfo?> saveAll(entities : MutableIterable<S>?) : MutableIterable<S>
     {

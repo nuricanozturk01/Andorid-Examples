@@ -7,6 +7,7 @@ import nuricanozturk.dev.android.repositorylib.entity.User
 import nuricanozturk.dev.android.repositorylib.global.USER_FILE
 import java.io.EOFException
 import java.io.FileInputStream
+import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
@@ -72,14 +73,34 @@ class UserRepository @Inject constructor(@ApplicationContext var context : Conte
 
     override fun findByUserNameAndPassword(userName : String, password : String) : User?
     {
-        return mContext.openFileInput(USER_FILE)
-            .use { findByUsernameAndPasswordCallback(it, userName, password) }
+        var result : User? = null
+        try
+        {
+            result = mContext.openFileInput(USER_FILE)
+                .use { findByUsernameAndPasswordCallback(it, userName, password) }
+        }
+        catch (ignore : FileNotFoundException)
+        {
+
+        }
+        return result
     }
 
 
     override fun existsById(username : String?) : Boolean
     {
-        return mContext.openFileInput(USER_FILE).use { existsByUsernameCallback(it, username!!) }
+
+        var result = false
+        try
+        {
+            result =
+                mContext.openFileInput(USER_FILE).use { existsByUsernameCallback(it, username!!) }
+        }
+        catch (ignore : FileNotFoundException)
+        {
+
+        }
+        return result
     }
 
     override fun count() : Long

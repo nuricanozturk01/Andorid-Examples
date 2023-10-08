@@ -29,6 +29,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.handleLoginButton()}"
             android:text="@string/button_login_text" />
 
         <Button
