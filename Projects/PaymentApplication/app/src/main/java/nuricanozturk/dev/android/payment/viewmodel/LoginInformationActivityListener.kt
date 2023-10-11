@@ -10,4 +10,5 @@ class LoginInformationActivityListener (activity: LoginInformationActivity)
     fun handleSuccessLoginButton() = mActivity.get()?.successLoginButtonClicked()
     fun handleFailLoginButton() = mActivity.get()?.successFailButtonClicked()
     fun handleCloseButton() = mActivity.get()?.closeButtonClicked()
+    fun handleListViewItemClicked(pos: Int) = mActivity.get()?.handleListViewItemClicked(pos)
 }

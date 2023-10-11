@@ -2,7 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
         <import type="nuricanozturk.dev.android.payment.viewmodel.RegisterActivityListenerViewModel" />
 
         <import type="nuricanozturk.dev.android.app.data.service.dto.UserSaveDTO" />
@@ -17,7 +16,9 @@
             name="user"
             type="UserSaveDTO" />
 
-
+        <variable
+            name="isFocus"
+            type="boolean" />
     </data>
 
     <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -25,6 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:id="@+id/registerActivityLayout"
         tools:context=".RegisterActivity">
 
         <EditText
@@ -33,7 +35,8 @@
             android:ems="10"
             android:hint="@string/edittext_user_name_hint_text"
             android:inputType="text"
-            android:text="@={user.username}" />
+            android:text="@={user.username}"
+            />
 
         <EditText
             android:layout_width="match_parent"
@@ -80,6 +83,18 @@
             android:layout_height="wrap_content"
             android:onClick="@{() -> viewModel.handleRegisterButton()}"
             android:text="@string/button_register_text" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.handleCloseButton()}"
+            android:text="@string/button_close_text" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.handleClearButton()}"
+            android:text="@string/button_clear_text" />
 
     </LinearLayout>
 </layout>

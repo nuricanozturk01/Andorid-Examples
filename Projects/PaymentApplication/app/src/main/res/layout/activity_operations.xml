@@ -20,22 +20,20 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/button_payment_text"
             android:onClick="@{() -> viewModel.handlePaymentButton()}"
-            />
+            android:text="@string/button_payment_text" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/button_login_information_text"
-            android:onClick="@{() -> viewModel.handleLoginInfoButton()}"/>
+            android:onClick="@{() -> viewModel.handleLoginInfoButton()}"
+            android:text="@string/button_login_information_text" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/button_close_text"
             android:onClick="@{() -> viewModel.handleCloseButton()}"
-            />
+            android:text="@string/button_close_text" />
 
     </LinearLayout>
 </layout>

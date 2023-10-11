@@ -4,12 +4,19 @@
     <data>
 
         <import type="nuricanozturk.dev.android.payment.viewmodel.LoginInformationActivityListener" />
+
         <import type="nuricanozturk.dev.android.app.data.service.dto.LoginInfoStatusDTO" />
+
         <import type="android.widget.ArrayAdapter" />
+
+        <variable
+            name="itemPos"
+            type="int" />
 
         <variable
             name="adapter"
             type="ArrayAdapter&lt;LoginInfoStatusDTO>" />
+
         <variable
             name="viewModel"
             type="LoginInformationActivityListener" />
@@ -25,27 +32,26 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/button_success_logins_text"
-            android:onClick="@{() -> viewModel.handleSuccessLoginButton()}"/>
+            android:onClick="@{() -> viewModel.handleSuccessLoginButton()}"
+            android:text="@string/button_success_logins_text" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/button_fail_logins_text"
             android:onClick="@{() -> viewModel.handleFailLoginButton()}"
-            />
+            android:text="@string/button_fail_logins_text" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/button_close_text"
             android:onClick="@{() -> viewModel.handleCloseButton()}"
-            />
-        
+            android:text="@string/button_close_text" />
+
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adapter="@{adapter}"
-            />
+            android:onItemClick="@{(p,v, post, i) -> viewModel.handleListViewItemClicked(post)}"
+            android:selectedItemPosition="@={itemPos}" />
     </LinearLayout>
 </layout>

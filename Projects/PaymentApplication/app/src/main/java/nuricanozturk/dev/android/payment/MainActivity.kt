@@ -3,7 +3,6 @@ package nuricanozturk.dev.android.payment
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 
 
@@ -15,7 +14,6 @@ import nuricanozturk.dev.android.payment.viewmodel.MainActivityListenerViewModel
 class MainActivity : AppCompatActivity()
 {
     private lateinit var mBinding : ActivityMainBinding
-
 
     override fun onCreate(savedInstanceState : Bundle?)
     {
@@ -29,13 +27,6 @@ class MainActivity : AppCompatActivity()
         mBinding.viewModel = MainActivityListenerViewModel(this)
 
     }
-
- /*   private fun saveUser()
-    {
-        val user = UserSaveDTO("nuricanozturk", "nuri321", "Nuri",
-            "ÖZTÜRK", LocalDate.of(1999, Month.JANUARY, 25), "Can")
-        paymentService.saveUser(user)
-    }*/
 
     fun registerButtonClicked()
     {
