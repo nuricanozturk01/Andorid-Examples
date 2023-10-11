@@ -3,6 +3,7 @@ package nuricanozturk.dev.android.app.data.service
 import com.karandev.util.data.repository.exception.RepositoryException
 import com.karandev.util.data.service.DataServiceException
 import nuricanozturk.dev.android.app.data.service.dto.LoginInfoDTO
+import nuricanozturk.dev.android.app.data.service.dto.LoginInfoStatusDTO
 import nuricanozturk.dev.android.app.data.service.dto.UserSaveDTO
 import nuricanozturk.dev.android.app.data.service.mapper.ILoginInfoMapper
 import nuricanozturk.dev.android.app.data.service.mapper.IUserSaveMapper
@@ -19,7 +20,6 @@ class PaymentAppDataService @Inject constructor(paymentHelper : PaymentApplicati
                                                 @LoginInfoMapperInterceptor loginInfoMapper : ILoginInfoMapper)
 {
     private val mPaymentHelper = paymentHelper
-
 
     private val mUserSaveMapper = userSaveMapper
 
@@ -60,6 +60,58 @@ class PaymentAppDataService @Inject constructor(paymentHelper : PaymentApplicati
             else mPaymentHelper.saveLoginInfo(loginInfo.also { it.success = false })
 
             return loginInfo.success
+        }
+        catch (ex : RepositoryException)
+        {
+            throw DataServiceException("PaymentAppDataService.saveUser", ex.cause)
+        }
+        catch (ex : Throwable)
+        {
+            throw DataServiceException("PaymentAppDataService.saveUser", ex)
+        }
+    }
+
+    fun findLoginInfoByUsername(username: String) : List<LoginInfoStatusDTO>
+    {
+        try{
+            return mPaymentHelper.findLoginInfoByUserName(username)
+                .map { mLoginInfoMapper.toLoginInfoStatusDTO(it) }
+                .toList()
+        }
+        catch (ex : RepositoryException)
+        {
+            throw DataServiceException("PaymentAppDataService.saveUser", ex.cause)
+        }
+        catch (ex : Throwable)
+        {
+            throw DataServiceException("PaymentAppDataService.saveUser", ex)
+        }
+    }
+    fun findSuccessLoginByUsername(username: String) : List<LoginInfoStatusDTO>
+    {
+        try{
+
+            return mPaymentHelper.findSuccessByUserNameLoginInfo(username)
+                .map { mLoginInfoMapper.toLoginInfoStatusDTO(it) }
+                .toList()
+        }
+        catch (ex : RepositoryException)
+        {
+            throw DataServiceException("PaymentAppDataService.saveUser", ex.cause)
+        }
+        catch (ex : Throwable)
+        {
+            throw DataServiceException("PaymentAppDataService.saveUser", ex)
+        }
+    }
+
+    fun findFailLoginByUsername(username: String) : List<LoginInfoStatusDTO>
+    {
+        try{
+            return mPaymentHelper.findFailsByUserNameLoginInfo(username)
+                .map { mLoginInfoMapper.toLoginInfoStatusDTO(it) }
+                .toList()
+
         }
         catch (ex : RepositoryException)
         {

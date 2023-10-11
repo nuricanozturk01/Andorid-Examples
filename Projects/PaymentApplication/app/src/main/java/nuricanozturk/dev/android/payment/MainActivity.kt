@@ -3,6 +3,7 @@ package nuricanozturk.dev.android.payment
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 
 
@@ -10,7 +11,7 @@ import nuricanozturk.dev.android.payment.databinding.ActivityMainBinding
 import nuricanozturk.dev.android.payment.viewmodel.MainActivityListenerViewModel
 
 
-
+//typealias adapter = ArrayAdapter<....>  //bunun import ederek arrayadaper unaryoperator den kurtulabilirsin
 class MainActivity : AppCompatActivity()
 {
     private lateinit var mBinding : ActivityMainBinding

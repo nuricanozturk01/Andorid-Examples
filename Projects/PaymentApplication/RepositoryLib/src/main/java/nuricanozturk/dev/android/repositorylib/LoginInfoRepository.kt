@@ -12,6 +12,7 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
+import java.lang.reflect.Array
 import java.util.Optional
 import javax.inject.Inject
 
@@ -19,14 +20,14 @@ import javax.inject.Inject
 class LoginInfoRepository @Inject constructor(@ApplicationContext var context: Context): ILoginInfoRepository
 {
     private val mContext : Context = context
-    /*private fun findByUsernameCallback(fis : FileInputStream, username : String) : List<LoginInfo>?
+   /* private fun findByUsernameCallback(fis : FileInputStream, username : String) : List<LoginInfo>
     {
-        var loginInfo : List<LoginInfo> = MutableList()
+        val loginInfo = ArrayList<LoginInfo>()
         try
         {
             while (true)
             {
-                var info = ObjectInputStream(fis).readObject() as? LoginInfo
+                val info = ObjectInputStream(fis).readObject() as? LoginInfo
 
                 if (info?.username == username)
                     loginInfo.add(info)
@@ -34,12 +35,111 @@ class LoginInfoRepository @Inject constructor(@ApplicationContext var context: C
         }
         catch (ignore : EOFException)
         {
-            user = null
+
         }
-        return user
+        return loginInfo
+    }
+
+    private fun findSuccessByUserNameCallback(fis : FileInputStream, username : String) : List<LoginInfo>
+    {
+        val loginInfo = ArrayList<LoginInfo>()
+        try
+        {
+            while (true)
+            {
+                val info = ObjectInputStream(fis).readObject() as? LoginInfo
+
+                if (info?.username == username && info.success)
+                    loginInfo.add(info)
+            }
+        }
+        catch (ignore : EOFException)
+        {
+
+        }
+        return loginInfo
+    }
+    private fun findFailByUserNameCallback(fis : FileInputStream, username : String) : List<LoginInfo>
+    {
+        val loginInfo = ArrayList<LoginInfo>()
+        try
+        {
+            while (true)
+            {
+                val info = ObjectInputStream(fis).readObject() as? LoginInfo
+
+                if (info?.username == username && !info.success)
+                    loginInfo.add(info)
+            }
+        }
+        catch (ignore : EOFException)
+        {
+
+        }
+        return loginInfo
     }*/
+   private fun findByUserNameCallback(fis: FileInputStream, username: String): List<LoginInfo>
+   {
+       val list = ArrayList<LoginInfo>()
 
+       try {
+           while (true) {
+               val ois = ObjectInputStream(fis)
 
+               val loginInfo = ois.readObject() as LoginInfo
+
+               if (loginInfo.username == username)
+                   list.add(loginInfo)
+           }
+       }
+       catch (ignore: EOFException) {
+
+       }
+
+       return list
+   }
+
+    private fun findSuccessByUserNameCallback(fis: FileInputStream, username: String): List<LoginInfo>
+    {
+        val list = ArrayList<LoginInfo>()
+
+        try {
+            while (true) {
+                val ois = ObjectInputStream(fis)
+
+                val loginInfo = ois.readObject() as LoginInfo
+
+                if (loginInfo.username == username && loginInfo.success)
+                    list.add(loginInfo)
+            }
+        }
+        catch (ignore: EOFException) {
+
+        }
+
+        return list
+    }
+
+    private fun findFailsByUserNameCallback(fis: FileInputStream, username: String): List<LoginInfo>
+    {
+        val list = ArrayList<LoginInfo>()
+
+        try {
+            while (true) {
+                val ois = ObjectInputStream(fis)
+
+                val loginInfo = ois.readObject() as LoginInfo
+
+                if (loginInfo.username == username && !loginInfo.success)
+                    list.add(loginInfo)
+            }
+        }
+        catch (ignore: EOFException) {
+
+        }
+
+        return list
+    }
     private fun <S : LoginInfo?> saveCallback(fos : FileOutputStream, loginInfo : S) : S
     {
         ObjectOutputStream(fos).writeObject(loginInfo)
@@ -56,20 +156,20 @@ class LoginInfoRepository @Inject constructor(@ApplicationContext var context: C
 
     override fun findByUserName(userName : String) : List<LoginInfo>
     {
-       /* return context.openFileInput(LOGIN_INFO_FILE)
-            .use { findByUsernameCallback(it, userName) }*/
-
-        TODO()
+        return context.openFileInput(LOGIN_INFO_FILE)
+            .use { findByUserNameCallback(it, userName) }
     }
 
     override fun findSuccessByUserName(userName : String) : List<LoginInfo>
     {
-        TODO("Not yet implemented")
+        return context.openFileInput(LOGIN_INFO_FILE)
+            .use { findSuccessByUserNameCallback(it, userName) }
     }
 
     override fun findFailsByUserName(userName : String) : List<LoginInfo>
     {
-        TODO("Not yet implemented")
+        return context.openFileInput(LOGIN_INFO_FILE)
+            .use { findFailsByUserNameCallback(it, userName) }
     }
 /////////////////////////////////////////////////////////
     override fun findLastSuccessByUserName(userName : String) : List<LoginInfo>

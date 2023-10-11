@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="nuricanozturk.dev.android.payment.viewmodel.LoginInformationActivityListener" />
+        <import type="nuricanozturk.dev.android.app.data.service.dto.LoginInfoStatusDTO" />
+        <import type="android.widget.ArrayAdapter" />
+
+        <variable
+            name="adapter"
+            type="ArrayAdapter&lt;LoginInfoStatusDTO>" />
+        <variable
+            name="viewModel"
+            type="LoginInformationActivityListener" />
+    </data>
+
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".LoginInformationActivity">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_success_logins_text"
+            android:onClick="@{() -> viewModel.handleSuccessLoginButton()}"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_fail_logins_text"
+            android:onClick="@{() -> viewModel.handleFailLoginButton()}"
+            />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_close_text"
+            android:onClick="@{() -> viewModel.handleCloseButton()}"
+            />
+        
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adapter="@{adapter}"
+            />
+    </LinearLayout>
+</layout>

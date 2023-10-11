@@ -1,5 +1,7 @@
 package nuricanozturk.dev.android.payment;
 
+import static nuricanozturk.dev.android.payment.global.BundleKeysKt.LOGIN_INFO;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
@@ -52,7 +54,7 @@ public class LoginActivity extends AppCompatActivity
             if (m_service.checkAndSaveLoginInfo(loginInfo))
             {
                 Toast.makeText(this, "Access granted", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(this, OperationsActivity.class));
+                startActivity(new Intent(this, OperationsActivity.class).putExtra(LOGIN_INFO, loginInfo));
             } else Toast.makeText(this, "Access denied!", Toast.LENGTH_LONG).show();
 
         }

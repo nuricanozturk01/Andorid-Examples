@@ -10,11 +10,6 @@ import javax.inject.Inject
 
 class PaymentApplicationHelper @Inject constructor()
 {
-    fun getHelloMessage() : String
-    {
-        return "DAL LAYER"
-    }
-
     @Inject
     lateinit var userRepository : IUserRepository
 

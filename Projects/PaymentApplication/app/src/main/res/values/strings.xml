@@ -9,4 +9,8 @@
     <string name="edittext_middle_name_hint_text">Input Middle Name</string>
     <string name="edittext_last_name_hint_text">Input Last Name</string>
     <string name="edittext_birth_date_hint_text">Input Birth Date</string>
+    <string name="button_payment_text">Payment</string>
+    <string name="button_login_information_text">Login Information</string>
+    <string name="button_success_logins_text">Success Logins</string>
+    <string name="button_fail_logins_text">Fail Logins</string>
 </resources>
