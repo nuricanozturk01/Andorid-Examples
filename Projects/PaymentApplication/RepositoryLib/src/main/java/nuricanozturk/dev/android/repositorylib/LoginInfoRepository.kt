@@ -162,8 +162,7 @@ class LoginInfoRepository @Inject constructor(@ApplicationContext var context: C
 
     override fun findSuccessByUserName(userName : String) : List<LoginInfo>
     {
-        return context.openFileInput(LOGIN_INFO_FILE)
-            .use { findSuccessByUserNameCallback(it, userName) }
+        return context.openFileInput(LOGIN_INFO_FILE).use { findSuccessByUserNameCallback(it, userName) }
     }
 
     override fun findFailsByUserName(userName : String) : List<LoginInfo>

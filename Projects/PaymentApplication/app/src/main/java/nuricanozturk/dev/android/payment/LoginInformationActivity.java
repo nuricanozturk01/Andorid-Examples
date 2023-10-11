@@ -18,12 +18,14 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import nuricanozturk.dev.android.app.data.service.PaymentAppDataService;
 import nuricanozturk.dev.android.app.data.service.dto.LoginInfoDTO;
 import nuricanozturk.dev.android.app.data.service.dto.LoginInfoStatusDTO;
 import nuricanozturk.dev.android.payment.databinding.ActivityLoginInformationBinding;
 import nuricanozturk.dev.android.payment.viewmodel.LoginInformationActivityListener;
 
+@AndroidEntryPoint
 public class LoginInformationActivity extends AppCompatActivity {
 
     private ActivityLoginInformationBinding m_binding;
@@ -64,7 +66,9 @@ public class LoginInformationActivity extends AppCompatActivity {
             var adapter = m_binding.getAdapter();
 
             adapter.clear();
-            var logins = m_service.findSuccessLoginByUsername(mLoginInfo.getUsername());
+            var username = mLoginInfo.getUsername();
+
+            var logins = m_service.findSuccessLoginByUsername(username);
             if (!logins.isEmpty())
                 logins.forEach(adapter::add);
             else Toast.makeText(this, "No fail login", Toast.LENGTH_LONG).show();
