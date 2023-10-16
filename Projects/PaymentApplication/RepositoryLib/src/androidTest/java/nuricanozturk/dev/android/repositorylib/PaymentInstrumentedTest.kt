@@ -63,4 +63,10 @@ class PaymentInstrumentedTest
     {
         assertEquals(2, paymentRepository.findByUserName("nuricanozturk").size)
     }
+
+    @Test
+    fun save_and_checkEqualQuantity()
+    {
+        assertTrue(5.0 - paymentRepository.findByUserName("halil")[0].quantity < 0.001)
+    }
 }
