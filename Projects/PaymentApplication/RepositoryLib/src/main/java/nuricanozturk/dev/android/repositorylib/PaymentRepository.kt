@@ -2,24 +2,45 @@ package nuricanozturk.dev.android.repositorylib
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
+import nuricanozturk.dev.android.repositorylib.entity.LoginInfo
 import nuricanozturk.dev.android.repositorylib.entity.Payment
+import nuricanozturk.dev.android.repositorylib.global.LOGIN_INFO_FILE
 import nuricanozturk.dev.android.repositorylib.global.PAYMENT_FILE
+import java.io.EOFException
+import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.util.Optional
 import javax.inject.Inject
 
-class PaymentRepository @Inject constructor(@ApplicationContext var context: Context): IPaymentRepository
+class PaymentRepository @Inject constructor(@ApplicationContext var context : Context) :
+    IPaymentRepository
 {
-
-
-
     override fun <S : Payment?> save(entity : S) : S
     {
-        return context.openFileOutput(PAYMENT_FILE, Context.MODE_APPEND)
-            .use { saveCallback(it, entity) }
+        return context.openFileOutput(PAYMENT_FILE, Context.MODE_APPEND).use { saveCallback(it, entity) }
     }
+    private fun findByUserNameCallback(fis: FileInputStream, username: String): List<Payment>
+    {
+        val list = ArrayList<Payment>()
 
+        try {
+            while (true) {
+                val ois = ObjectInputStream(fis)
+
+                val paymentInfo = ois.readObject() as Payment
+
+                if (paymentInfo.username == username)
+                    list.add(paymentInfo)
+            }
+        }
+        catch (ignore: EOFException) {
+
+        }
+
+        return list
+    }
     private fun <S : Payment?> saveCallback(fos : FileOutputStream, payment : S) : S
     {
         ObjectOutputStream(fos).writeObject(payment)
@@ -29,7 +50,8 @@ class PaymentRepository @Inject constructor(@ApplicationContext var context: Con
     ///////////////////////
     override fun findByUserName(userName : String) : List<Payment>
     {
-        TODO("Not yet implemented")
+        return context.openFileInput(PAYMENT_FILE)
+            .use { findByUserNameCallback(it, userName) }
     }
 
     override fun count() : Long
@@ -56,7 +78,6 @@ class PaymentRepository @Inject constructor(@ApplicationContext var context: Con
     {
         TODO("Not yet implemented")
     }
-
 
 
     override fun <S : Payment?> saveAll(entities : MutableIterable<S>?) : MutableIterable<S>

@@ -1,5 +1,6 @@
 package nuricanozturk.dev.android.payment
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
@@ -10,8 +11,10 @@ import androidx.databinding.DataBindingUtil
 import com.karandev.util.data.service.DataServiceException
 import dagger.hilt.android.AndroidEntryPoint
 import nuricanozturk.dev.android.app.data.service.PaymentAppDataService
+import nuricanozturk.dev.android.app.data.service.dto.LoginInfoDTO
 import nuricanozturk.dev.android.app.data.service.dto.PaymentSaveDTO
 import nuricanozturk.dev.android.payment.databinding.ActivityMakePaymentBinding
+import nuricanozturk.dev.android.payment.global.LOGIN_INFO
 import nuricanozturk.dev.android.payment.viewmodel.MakePaymentActivityListenerViewModel
 import javax.inject.Inject
 
@@ -19,6 +22,7 @@ import javax.inject.Inject
 class MakePaymentActivity : AppCompatActivity()
 {
     private lateinit var mBinding : ActivityMakePaymentBinding
+    private lateinit var mLoginInfo: LoginInfoDTO
 
     @Inject
     lateinit var mService : PaymentAppDataService
@@ -28,9 +32,14 @@ class MakePaymentActivity : AppCompatActivity()
         super.onCreate(savedInstanceState)
         initialize()
     }
-
+    private fun initLoginInfo() {
+        mLoginInfo =
+            if (Build.VERSION.SDK_INT < 33) intent.getSerializableExtra(LOGIN_INFO) as LoginInfoDTO
+            else intent.getSerializableExtra(LOGIN_INFO, LoginInfoDTO::class.java)!!
+    }
     private fun initialize()
     {
+        initLoginInfo()
         initBinding()
     }
 
@@ -38,7 +47,7 @@ class MakePaymentActivity : AppCompatActivity()
     {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_make_payment)
         mBinding.viewModel = MakePaymentActivityListenerViewModel(this)
-        mBinding.paymentSaveDTO = PaymentSaveDTO()
+        mBinding.paymentSaveDTO = PaymentSaveDTO(username = mLoginInfo.username)
         mBinding.result = ""
     }
 
@@ -51,6 +60,7 @@ class MakePaymentActivity : AppCompatActivity()
 
             mService.makePayment(mBinding.paymentSaveDTO!!)
             mBinding.result = mBinding.paymentSaveDTO!!.toString()
+            Toast.makeText(this, "username: ${mBinding.paymentSaveDTO!!.username}", Toast.LENGTH_LONG).show()
         }
         catch (ex : DataServiceException)
         {
