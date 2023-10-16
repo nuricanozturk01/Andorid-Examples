@@ -5,6 +5,7 @@ import nuricanozturk.dev.android.repositorylib.ILoginInfoRepository
 import nuricanozturk.dev.android.repositorylib.IPaymentRepository
 import nuricanozturk.dev.android.repositorylib.IUserRepository
 import nuricanozturk.dev.android.repositorylib.entity.LoginInfo
+import nuricanozturk.dev.android.repositorylib.entity.Payment
 import nuricanozturk.dev.android.repositorylib.entity.User
 import javax.inject.Inject
 
@@ -40,6 +41,18 @@ class PaymentApplicationHelper @Inject constructor()
         catch (ex : Throwable)
         {
             throw RepositoryException("PaymentApplicationHelper.saveLoginInfo", ex)
+        }
+    }
+
+    fun makePayment(payment : Payment) : Payment
+    {
+        try
+        {
+            return paymentRepository.save(payment)
+        }
+        catch (ex : Throwable)
+        {
+            throw RepositoryException("PaymentApplicationHelper.makePayment", ex)
         }
     }
     fun findByUserNameAndPassword(userName : String, password : String) : User?

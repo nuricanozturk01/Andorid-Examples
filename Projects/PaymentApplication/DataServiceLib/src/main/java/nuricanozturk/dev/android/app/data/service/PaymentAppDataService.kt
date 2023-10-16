@@ -4,19 +4,24 @@ import com.karandev.util.data.repository.exception.RepositoryException
 import com.karandev.util.data.service.DataServiceException
 import nuricanozturk.dev.android.app.data.service.dto.LoginInfoDTO
 import nuricanozturk.dev.android.app.data.service.dto.LoginInfoStatusDTO
+import nuricanozturk.dev.android.app.data.service.dto.PaymentSaveDTO
 import nuricanozturk.dev.android.app.data.service.dto.UserSaveDTO
 import nuricanozturk.dev.android.app.data.service.mapper.ILoginInfoMapper
+import nuricanozturk.dev.android.app.data.service.mapper.IPaymentSaveMapper
 import nuricanozturk.dev.android.app.data.service.mapper.IUserSaveMapper
 import nuricanozturk.dev.android.app.data.service.mapper.di.module.annotation.LoginInfoMapperInterceptor
+import nuricanozturk.dev.android.app.data.service.mapper.di.module.annotation.PaymentSaveMapperInterceptor
 import nuricanozturk.dev.android.app.data.service.mapper.di.module.annotation.UserSaveMapperInterceptor
 import nuricanozturk.dev.android.repositorylib.dal.PaymentApplicationHelper
 import nuricanozturk.dev.android.repositorylib.entity.LoginInfo
+import nuricanozturk.dev.android.repositorylib.entity.Payment
 import javax.inject.Inject
 import kotlin.math.log
 
 // BRUADA BACKING FIELD'dan DOLAYI CONStrUCtOR INJECTION yAPILAMIYOR
 class PaymentAppDataService @Inject constructor(paymentHelper : PaymentApplicationHelper,
                                                 @UserSaveMapperInterceptor userSaveMapper : IUserSaveMapper,
+                                                @PaymentSaveMapperInterceptor paymentSaveMapper : IPaymentSaveMapper,
                                                 @LoginInfoMapperInterceptor loginInfoMapper : ILoginInfoMapper)
 {
     private val mPaymentHelper = paymentHelper
@@ -24,6 +29,7 @@ class PaymentAppDataService @Inject constructor(paymentHelper : PaymentApplicati
     private val mUserSaveMapper = userSaveMapper
 
     private val mLoginInfoMapper = loginInfoMapper
+    private val mPaymentSaveMapper = paymentSaveMapper
 
     fun saveUser(userSaveDTO : UserSaveDTO) : Boolean
     {
@@ -40,6 +46,26 @@ class PaymentAppDataService @Inject constructor(paymentHelper : PaymentApplicati
         catch (ex : Throwable)
         {
             throw DataServiceException("PaymentAppDataService.saveUser", ex)
+        }
+
+        return result
+    }
+
+    fun makePayment(paymentSaveDTO : PaymentSaveDTO) : Boolean
+    {
+        var result = false
+        try
+        {
+            mPaymentHelper.makePayment(mPaymentSaveMapper.toPayment(paymentSaveDTO))
+            result = true
+        }
+        catch (ex : RepositoryException)
+        {
+            throw DataServiceException("PaymentAppDataService.makePayment", ex.cause)
+        }
+        catch (ex : Throwable)
+        {
+            throw DataServiceException("PaymentAppDataService.makePayment", ex)
         }
 
         return result

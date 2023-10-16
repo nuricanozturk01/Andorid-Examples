@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="nuricanozturk.dev.android.payment.viewmodel.MakePaymentActivityListenerViewModel" />
+        <import type="nuricanozturk.dev.android.payment.converter.DoubleConverter" />
+
+        <import type="nuricanozturk.dev.android.app.data.service.dto.PaymentSaveDTO" />
+
+        <variable
+            name="result"
+            type="String" />
+        <variable
+            name="paymentSaveDTO"
+            type="PaymentSaveDTO" />
+
+        <variable
+            name="viewModel"
+            type="MakePaymentActivityListenerViewModel" />
+    </data>
+
+
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/paymentActivityLayout"
+        tools:context=".MakePaymentActivity">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/edittext_description_hint"
+            android:text="@={paymentSaveDTO.description}"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/edittext_unit_price_hint"
+            android:inputType="numberDecimal"
+            android:text="@={DoubleConverter.INSTANCE.toStr(paymentSaveDTO.unitPrice)}"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/edittext_product_amount_hint"
+            android:inputType="numberDecimal"
+            android:text="@={DoubleConverter.INSTANCE.toStr(paymentSaveDTO.quantity)}"
+            />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.handleMakePaymentButton()}"
+            android:text="@string/button_make_payment_text" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.handleClearButton()}"
+            android:text="@string/button_clear_text" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.handleCloseButton()}"
+            android:text="@string/button_close_text" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@={result}"/>
+
+    </LinearLayout>
+</layout>

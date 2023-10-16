@@ -16,7 +16,17 @@
     <string name="alert_dialog_login_info_title_text">Login Information</string>
     <string name="alert_dialog_login_info_ok_text">OK</string>
     <string name="alert_dialog_register_close_title_text">Alert</string>
-    <string name="alert_dialog_register_yes_text">Alert</string>
-    <string name="alert_dialog_register_no_text">Alert</string>
+    <string name="alert_dialog_register_yes_text">Yes</string>
+    <string name="alert_dialog_register_no_text">No</string>
     <string name="button_clear_text">Clear</string>
+    <string name="edittext_product_name_hint">Product Name</string>
+    <string name="edittext_unit_price_hint">Unit Price</string>
+    <string name="edittext_product_amount_hint">Amount</string>
+    <string name="button_make_payment_text">Make Payment</string>
+    <string name="edittext_description_hint">Description</string>
+    <string name="alert_dialog_warning_title">Warning</string>
+    <string name="alert_dialog_not_empty_fields_text">Please fill in the blanks!</string>
+    <string name="alert_dialog_clear_title">Are you sure for clear all fields?</string>
+    <string name="alert_dialog_register_close_text">Close</string>
+    <string name="button_payments_text">Payments</string>
 </resources>

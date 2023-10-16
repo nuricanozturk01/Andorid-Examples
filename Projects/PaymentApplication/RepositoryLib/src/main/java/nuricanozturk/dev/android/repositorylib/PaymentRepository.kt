@@ -3,11 +3,30 @@ package nuricanozturk.dev.android.repositorylib
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import nuricanozturk.dev.android.repositorylib.entity.Payment
+import nuricanozturk.dev.android.repositorylib.global.PAYMENT_FILE
+import java.io.FileOutputStream
+import java.io.ObjectOutputStream
 import java.util.Optional
 import javax.inject.Inject
 
 class PaymentRepository @Inject constructor(@ApplicationContext var context: Context): IPaymentRepository
 {
+
+
+
+    override fun <S : Payment?> save(entity : S) : S
+    {
+        return context.openFileOutput(PAYMENT_FILE, Context.MODE_APPEND)
+            .use { saveCallback(it, entity) }
+    }
+
+    private fun <S : Payment?> saveCallback(fos : FileOutputStream, payment : S) : S
+    {
+        ObjectOutputStream(fos).writeObject(payment)
+        return payment
+    }
+
+    ///////////////////////
     override fun findByUserName(userName : String) : List<Payment>
     {
         TODO("Not yet implemented")
@@ -38,10 +57,7 @@ class PaymentRepository @Inject constructor(@ApplicationContext var context: Con
         TODO("Not yet implemented")
     }
 
-    override fun <S : Payment?> save(entity : S) : S
-    {
-        TODO("Not yet implemented")
-    }
+
 
     override fun <S : Payment?> saveAll(entities : MutableIterable<S>?) : MutableIterable<S>
     {
