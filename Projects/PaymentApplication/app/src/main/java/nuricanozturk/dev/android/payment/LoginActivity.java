@@ -55,7 +55,8 @@ public class LoginActivity extends AppCompatActivity
             {
                 Toast.makeText(this, "Access granted", Toast.LENGTH_LONG).show();
                 startActivity(new Intent(this, OperationsActivity.class).putExtra(LOGIN_INFO, loginInfo));
-            } else Toast.makeText(this, "Access denied!", Toast.LENGTH_LONG).show();
+            }
+            else Toast.makeText(this, "Access denied!", Toast.LENGTH_LONG).show();
 
         }
         catch (DataServiceException ex)

@@ -22,38 +22,45 @@ class OperationsActivity : AppCompatActivity() {
     @Inject
     lateinit var mService: PaymentAppDataService
 
-    private fun initLoginInfo() {
+    private fun initLoginInfo()
+    {
         mLoginInfo =
             if (Build.VERSION.SDK_INT < 33) intent.getSerializableExtra(LOGIN_INFO) as LoginInfoDTO
             else intent.getSerializableExtra(LOGIN_INFO, LoginInfoDTO::class.java)!!
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
         super.onCreate(savedInstanceState)
         initialize()
     }
 
-    private fun initBinding() {
+    private fun initBinding()
+    {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_operations)
         mBinding.viewModel = OperationsActivityViewModel(this)
     }
 
-    private fun initialize() {
+    private fun initialize()
+    {
         initBinding()
         initLoginInfo()
     }
 
-    fun paymentButtonClick() {
+    fun paymentButtonClick()
+    {
         Intent(this, PaymentActivity::class.java)
             .apply {putExtra(LOGIN_INFO, mLoginInfo); startActivity(this) }
     }
 
-    fun loginInformationButtonClick() {
+    fun loginInformationButtonClick()
+    {
         Intent(this, LoginInformationActivity::class.java)
             .apply {putExtra(LOGIN_INFO, mLoginInfo); startActivity(this) }
     }
 
-    fun closeButtonClick() {
+    fun closeButtonClick()
+    {
         finish()
     }
 }

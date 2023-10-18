@@ -9,13 +9,11 @@ object DoubleConverter
     fun toDoubleNumber(string : String) : Double
     {
         var result = 0.0
-
         try
         {
             result = string.toDouble();
         }
-        catch (ignored : NumberFormatException)
-        {
+        catch (ignored : NumberFormatException) {
 
         }
         return result;

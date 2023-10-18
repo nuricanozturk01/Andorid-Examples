@@ -1,6 +1,5 @@
 package nuricanozturk.dev.android.payment.viewmodel
 
-import android.view.View
 import nuricanozturk.dev.android.payment.RegisterActivity
 import java.lang.ref.WeakReference
 

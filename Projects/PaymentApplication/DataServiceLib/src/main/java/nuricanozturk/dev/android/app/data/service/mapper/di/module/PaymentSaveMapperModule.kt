@@ -1,4 +1,4 @@
-package nuricanozturk.dev.android.app.data.service.mapper.di.module.annotation
+package nuricanozturk.dev.android.app.data.service.mapper.di.module
 
 import dagger.Module
 import dagger.Provides
@@ -14,7 +14,6 @@ object PaymentSaveMapperModule
 {
     @Provides
     @Singleton
-    @PaymentSaveMapperInterceptor
     fun providePaymentSaveMapper() : IPaymentSaveMapper =
         Mappers.getMapper(IPaymentSaveMapper::class.java)
 }

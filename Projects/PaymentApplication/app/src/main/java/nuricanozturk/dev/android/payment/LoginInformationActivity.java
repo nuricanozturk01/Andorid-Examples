@@ -77,10 +77,12 @@ public class LoginInformationActivity extends AppCompatActivity
                 logins.forEach(adapter::add);
             else Toast.makeText(this, "No fail login", Toast.LENGTH_LONG).show();
 
-        } catch (DataServiceException ignored)
+        }
+        catch (DataServiceException ignored)
         {
             Toast.makeText(this, "Data Service Error", Toast.LENGTH_LONG).show();
-        } catch (Throwable ignore)
+        }
+        catch (Throwable ignore)
         {
             Toast.makeText(this, "Other type errors", Toast.LENGTH_LONG).show();
         }
@@ -91,6 +93,7 @@ public class LoginInformationActivity extends AppCompatActivity
         try
         {
             var adapter = m_binding.getAdapter();
+
             adapter.clear();
 
             var logins = m_service.findFailLoginByUsername(mLoginInfo.getUsername());
@@ -98,10 +101,12 @@ public class LoginInformationActivity extends AppCompatActivity
             if (!logins.isEmpty())
                 logins.forEach(adapter::add);
             else Toast.makeText(this, "No fail login", Toast.LENGTH_LONG).show();
-        } catch (DataServiceException ignored)
+        }
+        catch (DataServiceException ignored)
         {
             Toast.makeText(this, "Data Service Error", Toast.LENGTH_LONG).show();
-        } catch (Throwable ignore)
+        }
+        catch (Throwable ignore)
         {
             Toast.makeText(this, "Other type errors", Toast.LENGTH_LONG).show();
         }
