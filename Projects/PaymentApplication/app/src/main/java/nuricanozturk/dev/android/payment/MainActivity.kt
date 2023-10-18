@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity()
     {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         mBinding.viewModel = MainActivityListenerViewModel(this)
-
     }
 
     fun registerButtonClicked()
