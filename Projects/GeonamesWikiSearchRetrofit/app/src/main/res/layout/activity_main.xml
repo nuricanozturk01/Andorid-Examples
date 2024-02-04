@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="nuricanozturk.dev.adroid.app.geonames.wikisearch.viewmodel.MainActivityViewModel" />
+
+        <import type="nuricanozturk.dev.adroid.app.geonames.wikisearch.converter.MaxRowStringConverter" />
+
+        <import type="nuricanozturk.dev.adroid.app.geonames.wikisearch.api.WikiInfo" />
+
+        <import type="android.widget.ArrayAdapter" />
+
+
+        <variable
+            name="viewModel"
+            type="MainActivityViewModel" />
+
+        <variable
+            name="wikiInfoAdapter"
+            type="ArrayAdapter&lt;WikiInfo&gt;" />
+
+        <variable
+            name="query"
+            type="String" />
+
+        <variable
+            name="maxRows"
+            type="Integer" />
+
+        <variable
+            name="itemPos"
+            type="int" />
+
+    </data>
+
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:ems="10"
+            android:hint="@string/edittext_q_hint_text"
+            android:inputType="text"
+            android:text="@={query}" />
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:ems="10"
+            android:hint="@string/edittext_max_rows_hint"
+            android:inputType="number"
+            android:text="@={MaxRowStringConverter.INSTANCE.toStr(maxRows)}" />
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.handleGetButtonClicked()}"
+            android:text="@string/button_get_text" />
+
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adapter="@{wikiInfoAdapter}"
+            android:onItemClick="@{(p,v, post, i) -> viewModel.handleListViewItemClicked(post)}"
+            android:selectedItemPosition="@={itemPos}" />
+
+    </LinearLayout>
+
+</layout>
