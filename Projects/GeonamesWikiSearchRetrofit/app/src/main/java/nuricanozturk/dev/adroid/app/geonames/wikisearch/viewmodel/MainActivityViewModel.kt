@@ -10,7 +10,5 @@ class MainActivityViewModel(activity : MainActivity)
 
     fun handleGetButtonClicked() = mWeakReference.get()?.handleGetButtonClicked()
 
-    fun handleOtherPageButtonClicked() = mWeakReference.get()?.handleOtherPageButtonClicked()
-
     fun handleListViewItemClicked(pos : Int) = mWeakReference.get()?.handleListViewItemClicked(pos)
 }

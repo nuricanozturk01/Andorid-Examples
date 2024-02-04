@@ -1,22 +1,28 @@
 package nuricanozturk.dev.adroid.app.geonames.wikisearch
 
+
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import android.widget.Toast.makeText
 import androidx.databinding.DataBindingUtil
 import dagger.hilt.android.AndroidEntryPoint
+import nuricanozturk.dev.adroid.app.geonames.repositorylib.dal.WikiSearchServiceHelper
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.api.IGeonamesWikiSearchService
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.api.WikiInfo
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.api.WikiSearch
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.databinding.ActivityMainBinding
+import nuricanozturk.dev.adroid.app.geonames.wikisearch.global.QUERY
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.global.WIKI_INFO
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.viewmodel.MainActivityViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.concurrent.ScheduledExecutorService
 import javax.inject.Inject
+import  nuricanozturk.dev.adroid.app.geonames.repositorylib.entity.WikiInfo as WikiInfoEntity
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity()
@@ -25,6 +31,12 @@ class MainActivity : AppCompatActivity()
 
     @Inject
     lateinit var wikiSearchService : IGeonamesWikiSearchService
+
+    @Inject
+    lateinit var mExecutorService : ScheduledExecutorService
+
+    @Inject
+    lateinit var mDb : WikiSearchServiceHelper
 
     override fun onCreate(savedInstanceState : Bundle?)
     {
@@ -37,8 +49,8 @@ class MainActivity : AppCompatActivity()
         mBinding.viewModel = MainActivityViewModel(this)
         mBinding.wikiInfoAdapter =
             ArrayAdapter(this, android.R.layout.simple_list_item_1, ArrayList())
-        mBinding.query = "simav"
-        mBinding.maxRows = 10
+        mBinding.query = "izmir"
+        mBinding.maxRows = 3
     }
 
 
@@ -53,10 +65,23 @@ class MainActivity : AppCompatActivity()
         initData()
     }
 
+    private fun isExistByQuery(query : String,
+                               successCallback : () -> Unit,
+                               failCallback : () -> Unit)
+    {
+        mExecutorService.execute {
+            val exists = mDb.isExistByQuery(query)
+            runOnUiThread {
+                if (exists) successCallback() else failCallback()
+            }
+        }
+    }
 
-    fun handleGetButtonClicked()
+
+    private fun handleGetButtonClickedCallback()
     {
         mBinding.wikiInfoAdapter!!.clear()
+
         val call =
             wikiSearchService.findByQuery(mBinding.query!!, mBinding.maxRows!!, "nuricanozturk")
 
@@ -72,30 +97,42 @@ class MainActivity : AppCompatActivity()
                     wikiSearch.wikiInfo.forEach() { mBinding.wikiInfoAdapter!!.add(it) }
                     mBinding.wikiInfoAdapter!!.notifyDataSetChanged()
 
-                } else
-                {
-                    Toast.makeText(this@MainActivity, "No data found", Toast.LENGTH_SHORT).show()
-                }
+                } else makeText(this@MainActivity, "No data found", Toast.LENGTH_SHORT).show()
             }
 
             override fun onFailure(call : Call<WikiSearch>, t : Throwable)
             {
-                Toast.makeText(this@MainActivity, "Exception occured", Toast.LENGTH_SHORT).show()
+                makeText(this@MainActivity, "Exception occured", Toast.LENGTH_SHORT).show()
             }
 
         })
     }
 
-    fun handleOtherPageButtonClicked()
+    fun handleGetButtonClicked()
     {
-        Intent(this, WikiInfoSummaryActivity::class.java).apply { startActivity(this) }
+        isExistByQuery(mBinding.query!!, { findExistingWikiInfo() }, { handleGetButtonClickedCallback() })
+    }
+
+    private fun findExistingWikiInfo()
+    {
+        mBinding.wikiInfoAdapter!!.clear()
+        mExecutorService.execute {
+            val wikiInfo = mDb.getWikiInfoByQuery(mBinding.query!!)!!
+
+            runOnUiThread {
+                mBinding.wikiInfoAdapter!!.add(WikiInfo(wikiInfo.summary, wikiInfo.title))
+                mBinding.wikiInfoAdapter!!.notifyDataSetChanged()
+            }
+        }
     }
 
     fun handleListViewItemClicked(pos : Int)
     {
-        val wikiInfo = mBinding.wikiInfoAdapter!!.getItem(pos);
+        val wikiInfo = mBinding.wikiInfoAdapter!!.getItem(pos)
+
         Intent(this, WikiInfoSummaryActivity::class.java).apply {
             putExtra(WIKI_INFO, wikiInfo)
+            putExtra(QUERY, mBinding.query!!)
             startActivity(this)
         }
     }

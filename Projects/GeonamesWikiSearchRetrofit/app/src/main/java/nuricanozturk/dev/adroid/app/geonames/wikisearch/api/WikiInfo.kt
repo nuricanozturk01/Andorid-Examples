@@ -23,5 +23,12 @@ class WikiInfo : java.io.Serializable
     var countryCode : String? = null
     var feature : String? = null
 
-    override fun toString() = "$title - [$countryCode]"
+    constructor(summary : String, title : String)
+    {
+        this.summary = summary
+        this.title = title
+    }
+
+
+    override fun toString() = "$title"
 }

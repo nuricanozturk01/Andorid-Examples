@@ -43,5 +43,11 @@
             android:text="@={selectedWikiInfo.summary}"
             android:textFontWeight="700" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.handleSaveButtonClicked()}"
+            android:text="@string/button_save_text" />
+
     </LinearLayout>
 </layout>
