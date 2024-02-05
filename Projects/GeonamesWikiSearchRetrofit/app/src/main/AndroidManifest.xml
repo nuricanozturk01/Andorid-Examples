@@ -16,11 +16,15 @@
         android:theme="@style/Theme.GeonamesWikiSearchRetrofit"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
+        <activity
+            android:name=".SavedWikiInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WikiInfoSearchActivity"
+            android:exported="false" />
         <activity
             android:name=".WikiInfoSummaryActivity"
             android:exported="false" />
-
         <activity
             android:name=".MainActivity"
             android:exported="true">

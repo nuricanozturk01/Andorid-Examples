@@ -16,4 +16,13 @@
     <string name="alertdialog_save_message_text">Do you want to save?</string>
     <string name="alertdialog_save_yes_button_text">Save</string>
     <string name="alertdialog_save_no_button_text">Close</string>
+    <string name="button_remove_text">Remove</string>
+    <string name="wikiinfo_saved_text">WikiInfo is saved!</string>
+    <string name="wikiinfo_problem_text">WikiInfo is not saved! Problem occured!</string>
+    <string name="alertdialog_remove_title_text">Remove Wiki Info</string>
+    <string name="alertdialog_remove_message_text">Do you want to Remove from db?</string>
+    <string name="wikiinfo_remove_error_text">Wiki Info not removed!. Problem occured!</string>
+    <string name="wikiinfo_removed_text">Wiki Info removed successfully!</string>
+    <string name="button_search_wikiinfo_text">Search WikiInfo</string>
+    <string name="button_saved_wikiinfo_text">Saved WikiInfos</string>
 </resources>

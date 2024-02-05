@@ -8,5 +8,5 @@ class WikiInfoSummaryViewModel(activity : WikiInfoSummaryActivity)
     private val mWeakReference = WeakReference(activity)
 
     fun handleSaveButtonClicked() = mWeakReference.get()?.handleSaveButtonClicked()
-
+    fun handleRemoveButtonClicked() = mWeakReference.get()?.handleRemoveButtonClicked()
 }

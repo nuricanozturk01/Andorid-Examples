@@ -4,12 +4,14 @@ import android.app.AlertDialog
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import dagger.hilt.android.AndroidEntryPoint
 import nuricanozturk.dev.adroid.app.geonames.repositorylib.dal.WikiSearchServiceHelper
 import nuricanozturk.dev.adroid.app.geonames.repositorylib.entity.QueryInfo
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.api.WikiInfo
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.databinding.ActivityWikiInfoSummaryBinding
+import nuricanozturk.dev.adroid.app.geonames.wikisearch.exception.WikiInfoNotFoundException
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.global.QUERY
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.global.WIKI_INFO
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.viewmodel.WikiInfoSummaryViewModel
@@ -84,5 +86,49 @@ class WikiInfoSummaryActivity : AppCompatActivity()
             WikiInfoEntity(query = mQuery, summary = wikiInfo?.summary!!, title = wikiInfo.title!!, longitude = wikiInfo.latitude, latitude = wikiInfo.longitude, countryCode = wikiInfo.countryCode)
 
         mWikiSearchServiceHelper.save(wi)
+
+        runOnUiThread {
+            Toast.makeText(this@WikiInfoSummaryActivity, R.string.wikiinfo_saved_text, Toast.LENGTH_SHORT)
+                .show()
+        }
+    }
+
+    fun handleRemoveButtonClicked()
+    {
+        AlertDialog.Builder(this).setTitle(R.string.alertdialog_remove_title_text)
+            .setMessage(R.string.alertdialog_remove_message_text)
+            .setPositiveButton(R.string.alertdialog_save_yes_button_text) { _, _ -> mExecutorService.execute { removeWikiInfo(mWikiInfo) } }
+            .setNegativeButton(R.string.alertdialog_save_no_button_text) { _, _ -> finish() }
+            .create().show()
+    }
+
+    private fun removeWikiInfo(wikiInfo : WikiInfo)
+    {
+        try
+        {
+            mWikiSearchServiceHelper.getWikiInfoByQuery(mQuery)
+                ?: throw WikiInfoNotFoundException("WikiInfo not found")
+            mWikiSearchServiceHelper.removeQueryInfo(mQuery)
+            runOnUiThread {
+                Toast.makeText(this@WikiInfoSummaryActivity, R.string.wikiinfo_removed_text, Toast.LENGTH_SHORT)
+                    .show()
+            }
+            finish()
+
+
+        }
+        catch (ex : WikiInfoNotFoundException)
+        {
+            runOnUiThread {
+                Toast.makeText(this@WikiInfoSummaryActivity, ex.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+        catch (e : Exception)
+        {
+            runOnUiThread {
+                Toast.makeText(this@WikiInfoSummaryActivity, R.string.wikiinfo_remove_error_text, Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
     }
 }

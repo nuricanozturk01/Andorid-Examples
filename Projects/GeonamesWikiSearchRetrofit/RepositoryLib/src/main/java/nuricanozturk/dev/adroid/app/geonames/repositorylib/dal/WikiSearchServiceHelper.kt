@@ -88,5 +88,17 @@ class WikiSearchServiceHelper @Inject constructor()
         }
     }
 
+    fun removeQueryInfo(mQuery : String)
+    {
+        try
+        {
+            mQueryInfoDao.removeQueryInfoByQuery(mQuery)
+        }
+        catch (e : Exception)
+        {
+            throw e
+        }
+    }
+
 
 }

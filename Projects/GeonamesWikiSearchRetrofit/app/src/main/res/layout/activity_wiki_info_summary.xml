@@ -49,5 +49,11 @@
             android:onClick="@{() -> viewModel.handleSaveButtonClicked()}"
             android:text="@string/button_save_text" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.handleRemoveButtonClicked()}"
+            android:text="@string/button_remove_text" />
+
     </LinearLayout>
 </layout>

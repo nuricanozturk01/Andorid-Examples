@@ -16,4 +16,7 @@ interface IQueryInfoDao
 
     @Query("SELECT COUNT(*) FROM query_info")
     fun getCount() : Int
+
+    @Query("DELETE FROM query_info WHERE `query` = :query")
+    fun removeQueryInfoByQuery(query : String)
 }

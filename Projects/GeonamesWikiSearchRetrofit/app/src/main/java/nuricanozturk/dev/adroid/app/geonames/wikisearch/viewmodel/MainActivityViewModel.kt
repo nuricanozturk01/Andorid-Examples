@@ -7,8 +7,7 @@ class MainActivityViewModel(activity : MainActivity)
 {
     private val mWeakReference = WeakReference(activity)
 
+    fun handleSearchButtonClicked() = mWeakReference.get()?.handleSearchButtonClicked()
 
-    fun handleGetButtonClicked() = mWeakReference.get()?.handleGetButtonClicked()
-
-    fun handleListViewItemClicked(pos : Int) = mWeakReference.get()?.handleListViewItemClicked(pos)
+    fun handleSavedWikiInfosButtonClicked() = mWeakReference.get()?.    handleSavedWikiInfosButtonClicked()
 }
