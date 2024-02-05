@@ -25,4 +25,7 @@
     <string name="wikiinfo_removed_text">Wiki Info removed successfully!</string>
     <string name="button_search_wikiinfo_text">Search WikiInfo</string>
     <string name="button_saved_wikiinfo_text">Saved WikiInfos</string>
+    <string name="text_view_empty_text">List is empty</string>
+    <string name="alertdialog_remove_button_text">Remove</string>
+    <string name="button_save_all_text">Save All</string>
 </resources>

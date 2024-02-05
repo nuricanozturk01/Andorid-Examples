@@ -16,7 +16,6 @@ object GeonamesDatabaseModule
 {
     @Provides
     @Singleton
-
     fun provideGeonamesDatabase(@ApplicationContext context : Context) : GeonamesApplicationDatabase
     {
         return Room.databaseBuilder(context, GeonamesApplicationDatabase::class.java, "geonames_db.sqlite3")

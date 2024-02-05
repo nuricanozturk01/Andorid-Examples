@@ -11,4 +11,6 @@ class WikiInfoSearchActivityViewModel(activity : WikiInfoSearchActivity)
     fun handleGetButtonClicked() = mWeakReference.get()?.handleGetButtonClicked()
 
     fun handleListViewItemClicked(pos : Int) = mWeakReference.get()?.handleListViewItemClicked(pos)
+
+    fun handleSaveAllClicked() = mWeakReference.get()?.handleSaveAllClicked()
 }

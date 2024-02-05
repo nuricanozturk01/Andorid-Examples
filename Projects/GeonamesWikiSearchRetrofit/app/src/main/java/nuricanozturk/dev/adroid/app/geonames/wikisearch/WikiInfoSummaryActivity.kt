@@ -79,11 +79,12 @@ class WikiInfoSummaryActivity : AppCompatActivity()
 
     private fun saveWikiInfo(wikiInfo : WikiInfo?)
     {
-        val queryInfo = QueryInfo(query = mQuery, lastQueryTime = LocalDateTime.now())
+        val q = mQuery + "-" + wikiInfo?.title
+        val queryInfo = QueryInfo(query = q, lastQueryTime = LocalDateTime.now())
         mWikiSearchServiceHelper.save(queryInfo)
 
         val wi =
-            WikiInfoEntity(query = mQuery, summary = wikiInfo?.summary!!, title = wikiInfo.title!!, longitude = wikiInfo.latitude, latitude = wikiInfo.longitude, countryCode = wikiInfo.countryCode)
+            WikiInfoEntity(query = q, summary = wikiInfo?.summary!!, title = wikiInfo.title!!, longitude = wikiInfo.latitude, latitude = wikiInfo.longitude, countryCode = wikiInfo.countryCode)
 
         mWikiSearchServiceHelper.save(wi)
 
@@ -97,7 +98,7 @@ class WikiInfoSummaryActivity : AppCompatActivity()
     {
         AlertDialog.Builder(this).setTitle(R.string.alertdialog_remove_title_text)
             .setMessage(R.string.alertdialog_remove_message_text)
-            .setPositiveButton(R.string.alertdialog_save_yes_button_text) { _, _ -> mExecutorService.execute { removeWikiInfo(mWikiInfo) } }
+            .setPositiveButton(R.string.alertdialog_remove_button_text) { _, _ -> mExecutorService.execute { removeWikiInfo(mWikiInfo) } }
             .setNegativeButton(R.string.alertdialog_save_no_button_text) { _, _ -> finish() }
             .create().show()
     }

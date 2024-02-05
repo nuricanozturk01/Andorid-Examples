@@ -1,5 +1,6 @@
 package nuricanozturk.dev.adroid.app.geonames.wikisearch.viewmodel
 
+import android.view.View
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.MainActivity
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.SavedWikiInfoActivity
 import java.lang.ref.WeakReference

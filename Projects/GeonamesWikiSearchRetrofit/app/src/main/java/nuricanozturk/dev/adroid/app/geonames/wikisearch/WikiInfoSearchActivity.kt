@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import dagger.hilt.android.AndroidEntryPoint
 import nuricanozturk.dev.adroid.app.geonames.repositorylib.dal.WikiSearchServiceHelper
+import nuricanozturk.dev.adroid.app.geonames.repositorylib.entity.QueryInfo
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.api.IGeonamesWikiSearchService
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.api.WikiInfo
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.api.WikiSearch
@@ -15,13 +16,16 @@ import nuricanozturk.dev.adroid.app.geonames.wikisearch.databinding.ActivityMain
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.databinding.ActivityWikiInfoSearchBinding
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.global.QUERY
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.global.WIKI_INFO
-import nuricanozturk.dev.adroid.app.geonames.wikisearch.viewmodel.MainActivityViewModel
+import nuricanozturk.dev.adroid.app.geonames.repositorylib.entity.WikiInfo as WikiInfoEntity
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.viewmodel.WikiInfoSearchActivityViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.time.LocalDateTime
+import java.time.LocalDateTime.now
 import java.util.concurrent.ScheduledExecutorService
 import javax.inject.Inject
+
 @AndroidEntryPoint
 class WikiInfoSearchActivity : AppCompatActivity()
 {
@@ -46,10 +50,10 @@ class WikiInfoSearchActivity : AppCompatActivity()
     private fun initData()
     {
         mBinding.viewModel = WikiInfoSearchActivityViewModel(this)
-                            mBinding.wikiInfoAdapter =
-                                ArrayAdapter(this, android.R.layout.simple_list_item_1, ArrayList())
-                            mBinding.query = "izmir"
-                            mBinding.maxRows = 3
+        mBinding.wikiInfoAdapter =
+            ArrayAdapter(this, android.R.layout.simple_list_item_1, ArrayList())
+        mBinding.query = "izmir"
+        mBinding.maxRows = 3
     }
 
 
@@ -95,13 +99,16 @@ class WikiInfoSearchActivity : AppCompatActivity()
                 {
                     wikiSearch.wikiInfo.forEach() { mBinding.wikiInfoAdapter!!.add(it) }
                     mBinding.wikiInfoAdapter!!.notifyDataSetChanged()
+                    Toast.makeText(this@WikiInfoSearchActivity, "Data is not exists!", Toast.LENGTH_SHORT).show()
 
-                } else Toast.makeText(this@WikiInfoSearchActivity, "No data found", Toast.LENGTH_SHORT).show()
+                } else Toast.makeText(this@WikiInfoSearchActivity, "No data found", Toast.LENGTH_SHORT)
+                    .show()
             }
 
             override fun onFailure(call : Call<WikiSearch>, t : Throwable)
             {
-                Toast.makeText(this@WikiInfoSearchActivity, "Exception occured", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@WikiInfoSearchActivity, "Exception occured", Toast.LENGTH_SHORT)
+                    .show()
             }
 
         })
@@ -121,6 +128,8 @@ class WikiInfoSearchActivity : AppCompatActivity()
             runOnUiThread {
                 mBinding.wikiInfoAdapter!!.add(WikiInfo(wikiInfo.summary, wikiInfo.title))
                 mBinding.wikiInfoAdapter!!.notifyDataSetChanged()
+
+                Toast.makeText(this@WikiInfoSearchActivity, "Data is exists!", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -135,4 +144,38 @@ class WikiInfoSearchActivity : AppCompatActivity()
             startActivity(this)
         }
     }
+
+    fun handleSaveAllClicked()
+    {
+        mExecutorService.execute { handleAllSaveClickedCallback() }
+    }
+
+    private fun handleAllSaveClickedCallback()
+    {
+        val wikiInfos = mBinding.wikiInfoAdapter!!
+        val list = mutableListOf<WikiInfo>()
+
+        for (i in 0 until wikiInfos.count) list.add(wikiInfos.getItem(i)!!)
+
+        mExecutorService.execute {
+            list.forEachIndexed { index, wikiInfo ->
+                val q = if (index == 0) mBinding.query!! else mBinding.query + "-" + index
+
+                val queryInfo = QueryInfo(query = q, lastQueryTime = now())
+                mDb.save(queryInfo)
+
+                val wi = WikiInfoEntity(query = q, summary = wikiInfo.summary!!,
+                        title = wikiInfo.title!!,
+                        longitude = wikiInfo.longitude,
+                        latitude = wikiInfo.latitude,
+                        countryCode = wikiInfo.countryCode)
+                mDb.save(wi)
+            }
+        }
+
+        runOnUiThread {
+            Toast.makeText(this@WikiInfoSearchActivity, "All data saved", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 }

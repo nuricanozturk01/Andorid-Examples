@@ -100,5 +100,27 @@ class WikiSearchServiceHelper @Inject constructor()
         }
     }
 
+    /*fun saveAll(list : List<WikiInfo>)
+    {
+        try
+        {
+            mWikiInfo.saveAll(list)
+        }
+        catch (e : Exception)
+        {
+            throw e
+        }
+    }
 
+    fun saveAll(toList : List<QueryInfo>)
+    {
+        try
+        {
+            mQueryInfoDao.saveAll(toList)
+        }
+        catch (e : Exception)
+        {
+            throw e
+        }
+    }*/
 }
