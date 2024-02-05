@@ -28,4 +28,5 @@
     <string name="text_view_empty_text">List is empty</string>
     <string name="alertdialog_remove_button_text">Remove</string>
     <string name="button_save_all_text">Save All</string>
+    <string name="button_remove_all_text">Remove All</string>
 </resources>

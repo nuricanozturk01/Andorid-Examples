@@ -118,4 +118,21 @@ class SavedWikiInfoActivity : AppCompatActivity()
             startActivity(this)
         }
     }
+
+    fun handleRemoveAllButtonClicked()
+    {
+        mThreadPool.execute { removeAllWikiInfo() }
+
+    }
+
+    private fun removeAllWikiInfo()
+    {
+        val list = mServiceHelper.getAllQueryInformation()
+        mServiceHelper.removeAllWikiInfo(list)
+        runOnUiThread {
+            mBinding.wikiInfoAdapter!!.clear()
+            mBinding.wikiInfoAdapter!!.notifyDataSetChanged()
+            Toast.makeText(this, "All data removed", Toast.LENGTH_SHORT).show()
+        }
+    }
 }

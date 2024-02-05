@@ -1,6 +1,7 @@
 package nuricanozturk.dev.adroid.app.geonames.repositorylib.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -20,4 +21,11 @@ interface IQueryInfoDao
 
     @Query("DELETE FROM query_info WHERE `query` = :query")
     fun removeQueryInfoByQuery(query : String)
+
+
+    @Delete
+    fun removeAllQueries(list : List<QueryInfo>)
+
+    @Query("SELECT * FROM query_info")
+    fun getAllQueryInfo() : List<QueryInfo>
 }

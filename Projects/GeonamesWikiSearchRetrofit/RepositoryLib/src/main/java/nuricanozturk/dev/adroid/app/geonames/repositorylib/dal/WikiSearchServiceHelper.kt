@@ -100,6 +100,30 @@ class WikiSearchServiceHelper @Inject constructor()
         }
     }
 
+    fun removeAllWikiInfo(list : List<QueryInfo>)
+    {
+        try
+        {
+            mQueryInfoDao.removeAllQueries(list)
+        }
+        catch (e : Exception)
+        {
+            throw e
+        }
+    }
+
+    fun getAllQueryInformation() : List<QueryInfo>
+    {
+        try
+        {
+            return mQueryInfoDao.getAllQueryInfo()
+        }
+        catch (e : Exception)
+        {
+            throw e
+        }
+    }
+
     /*fun saveAll(list : List<WikiInfo>)
     {
         try

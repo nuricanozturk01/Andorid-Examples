@@ -32,6 +32,12 @@
         android:orientation="vertical"
         tools:context=".SavedWikiInfoActivity">
 
+        <Button
+            android:id="@+id/button_remove"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.handleRemoveAllButtonClicked()}"
+            android:text="@string/button_remove_all_text" />
         <ListView
             android:id="@+id/list_view_saved_wiki_info"
             android:layout_width="match_parent"

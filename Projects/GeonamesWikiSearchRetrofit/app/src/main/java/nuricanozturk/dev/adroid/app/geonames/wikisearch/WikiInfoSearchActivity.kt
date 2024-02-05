@@ -12,7 +12,6 @@ import nuricanozturk.dev.adroid.app.geonames.repositorylib.entity.QueryInfo
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.api.IGeonamesWikiSearchService
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.api.WikiInfo
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.api.WikiSearch
-import nuricanozturk.dev.adroid.app.geonames.wikisearch.databinding.ActivityMainBinding
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.databinding.ActivityWikiInfoSearchBinding
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.global.QUERY
 import nuricanozturk.dev.adroid.app.geonames.wikisearch.global.WIKI_INFO
@@ -21,16 +20,30 @@ import nuricanozturk.dev.adroid.app.geonames.wikisearch.viewmodel.WikiInfoSearch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.time.LocalDateTime
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStreamWriter
 import java.time.LocalDateTime.now
+import java.time.format.DateTimeFormatter.ofPattern
 import java.util.concurrent.ScheduledExecutorService
 import javax.inject.Inject
 
+const val SHARED_PREFERENCES_NAME = "geonames-input"
+const val SHARED_PREFERENCES_QUERY = "query"
+const val SHARED_PREFERENCES_MAX_ROWS = "maxRows"
+
+/*
+Activity'e özgü preference da var. buna sadece sahip olduğu aktivin içinden erişilebilir. Bu durumda bu preference'ı
+Activity'e özgü bir şekilde kullanmak istiyorsak, Activity'nin yaşam döngüsüne göre bu preference'ı kullanmamız gerekmektedir.
+ */
 @AndroidEntryPoint
 class WikiInfoSearchActivity : AppCompatActivity()
 {
-
     private lateinit var mBinding : ActivityWikiInfoSearchBinding
+
+    private val mWikiInfo = ArrayList<WikiInfo>()
 
     @Inject
     lateinit var wikiSearchService : IGeonamesWikiSearchService
@@ -43,19 +56,80 @@ class WikiInfoSearchActivity : AppCompatActivity()
 
     override fun onCreate(savedInstanceState : Bundle?)
     {
+        val privPref =
+            getPreferences(MODE_PRIVATE).getString("LAST_OPEN_DATE_TIME", now().format(ofPattern("dd/MM/yyyy kk:mm:ss")))
+        Toast.makeText(this, "Last open time: $privPref", Toast.LENGTH_SHORT).show()
         super.onCreate(savedInstanceState)
         initialize()
+    }
+
+    private fun saveData(data : String?, bw : BufferedWriter)
+    {
+        try
+        {
+            bw.write("$data\r\n")
+            bw.flush()
+        }
+        catch (ex : IOException)
+        {
+            runOnUiThread {
+                Toast.makeText(this, "IO Error while saving:${ex.message}", Toast.LENGTH_LONG)
+                    .show()
+            }
+        }
+    }
+
+    private fun saveCache(bw : BufferedWriter)
+    {
+        val count = mWikiInfo.size
+
+        for (i in 1..<count) saveData(mWikiInfo[i].summary, bw)
+    }
+
+    private fun saveCacheCallback()
+    {
+        try
+        {
+            BufferedWriter(OutputStreamWriter(FileOutputStream(File(cacheDir, "data.dat")))).use(this::saveCache)
+        }
+        catch (ex : IOException)
+        {
+            runOnUiThread {
+                Toast.makeText(this, "IO Error while opening:${ex.message}", Toast.LENGTH_LONG)
+                    .show()
+            }
+        }
     }
 
     private fun initData()
     {
         mBinding.viewModel = WikiInfoSearchActivityViewModel(this)
         mBinding.wikiInfoAdapter =
-            ArrayAdapter(this, android.R.layout.simple_list_item_1, ArrayList())
-        mBinding.query = "izmir"
-        mBinding.maxRows = 3
+            ArrayAdapter(this, android.R.layout.simple_list_item_1, mWikiInfo)
+        loadData()
+
     }
 
+    private fun loadData()
+    {
+        val pref = getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE)
+        mBinding.query = pref.getString(SHARED_PREFERENCES_QUERY, "ankara")
+        mBinding.maxRows = pref.getInt(SHARED_PREFERENCES_MAX_ROWS, 10)
+    }
+
+
+    override fun onDestroy()
+    {
+        val privEditor = getPreferences(MODE_PRIVATE).edit()
+        val editor =
+            getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit() // shared preferences is a key-value pair storage
+        privEditor.putString("LAST_OPEN_DATE_TIME", now().format(ofPattern("dd/MM/yyyy kk:mm:ss")))
+        editor.putString(SHARED_PREFERENCES_QUERY, mBinding.query)
+        editor.putInt(SHARED_PREFERENCES_MAX_ROWS, mBinding.maxRows!!) // commit() is synchronous, apply() is asynchronous
+        privEditor.apply()
+        editor.apply() // editor.commit()
+        super.onDestroy()
+    }
 
     private fun initialize()
     {
@@ -99,7 +173,7 @@ class WikiInfoSearchActivity : AppCompatActivity()
                 {
                     wikiSearch.wikiInfo.forEach() { mBinding.wikiInfoAdapter!!.add(it) }
                     mBinding.wikiInfoAdapter!!.notifyDataSetChanged()
-                    Toast.makeText(this@WikiInfoSearchActivity, "Data is not exists!", Toast.LENGTH_SHORT).show()
+                    mExecutorService.execute { saveCacheCallback() }
 
                 } else Toast.makeText(this@WikiInfoSearchActivity, "No data found", Toast.LENGTH_SHORT)
                     .show()
@@ -129,7 +203,8 @@ class WikiInfoSearchActivity : AppCompatActivity()
                 mBinding.wikiInfoAdapter!!.add(WikiInfo(wikiInfo.summary, wikiInfo.title))
                 mBinding.wikiInfoAdapter!!.notifyDataSetChanged()
 
-                Toast.makeText(this@WikiInfoSearchActivity, "Data is exists!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@WikiInfoSearchActivity, "Data is exists!", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
@@ -164,11 +239,8 @@ class WikiInfoSearchActivity : AppCompatActivity()
                 val queryInfo = QueryInfo(query = q, lastQueryTime = now())
                 mDb.save(queryInfo)
 
-                val wi = WikiInfoEntity(query = q, summary = wikiInfo.summary!!,
-                        title = wikiInfo.title!!,
-                        longitude = wikiInfo.longitude,
-                        latitude = wikiInfo.latitude,
-                        countryCode = wikiInfo.countryCode)
+                val wi =
+                    WikiInfoEntity(query = q, summary = wikiInfo.summary!!, title = wikiInfo.title!!, longitude = wikiInfo.longitude, latitude = wikiInfo.latitude, countryCode = wikiInfo.countryCode)
                 mDb.save(wi)
             }
         }
